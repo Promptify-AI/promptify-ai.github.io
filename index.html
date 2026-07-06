@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Prompt Optimizer | By IamNotWinterYT</title>
+    <style>
+        /* Modern Minimalist Midnight Theme */
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            background-color: #060709; 
+            color: #e2e8f0; 
+            margin: 0; 
+            padding: 20px; 
+            display: flex; 
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .container { 
+            background: #0f111a; 
+            padding: 25px 30px 30px 30px; 
+            border-radius: 20px; 
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7); 
+            width: 100%; 
+            max-width: 480px; 
+            border: 1px solid rgba(102, 252, 241, 0.1);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .view { display: none; }
+        .view.active { display: block; }
+
+        .top-nav {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        .diamond-btn {
+            background: rgba(69, 243, 255, 0.1);
+            border: 1px solid rgba(69, 243, 255, 0.3);
+            color: #45f3ff;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s ease;
+        }
+        .diamond-btn:hover { background: #45f3ff; color: #060709; box-shadow: 0 0 15px rgba(69, 243, 255, 0.3); }
+
+        h1 { color: #ffffff; margin: 0 0 6px 0; text-align: center; font-size: 26px; font-weight: 700; letter-spacing: -0.5px; }
+        p.subtitle { text-align: center; color: #8892b0; margin-top: 0; margin-bottom: 25px; font-size: 14px; }
+
+        label { font-weight: 500; display: block; margin: 20px 0 8px; color: #8892b0; font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; }
+
+        select, textarea { 
+            width: 100%; padding: 14px; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; box-sizing: border-box; 
+            font-size: 14px; background-color: #151922; color: #ffffff; transition: all 0.2s; 
+        }
+        select:focus, textarea:focus { border-color: #45f3ff; outline: none; box-shadow: 0 0 0 3px rgba(69, 243, 255, 0.1); }
+        select option { background-color: #151922; color: #ffffff; }
+        
+        textarea { resize: none; height: 110px; }
+
+        .pro-toggle-container {
+            margin-top: 15px; display: flex; align-items: center; justify-content: space-between;
+            background: rgba(255, 255, 255, 0.02); padding: 12px 16px; border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05); font-size: 13px; color: #a9b7c6;
+        }
+        .pro-toggle-container input { cursor: pointer; }
+        .pro-badge-pill {
+            background: linear-gradient(90deg, #ff0055, #ff5500); color: white; font-size: 9px;
+            font-weight: 700; padding: 2px 6px; border-radius: 20px; text-transform: uppercase;
+        }
+
+        .action-btn { 
+            width: 100%; background: #ffffff; color: #060709; border: none; padding: 16px; 
+            font-size: 15px; font-weight: 600; border-radius: 12px; cursor: pointer; margin-top: 20px; transition: all 0.2s; 
+        }
+        .action-btn:hover { background: #45f3ff; box-shadow: 0 5px 15px rgba(69, 243, 255, 0.2); }
+        .action-btn:disabled { background: #1f242e; color: #4a5568; cursor: not-allowed; box-shadow: none; }
+
+        .usage-hint-text { text-align: center; font-size: 12px; color: #626d85; margin-top: 12px; margin-bottom: 0; }
+
+        .pricing-header-area { text-align: center; margin-bottom: 25px; position: relative; }
+        .back-to-app-btn { position: absolute; left: 0; top: 0; background: none; border: none; color: #8892b0; cursor: pointer; font-size: 14px; }
+        .back-to-app-btn:hover { color: white; }
+
+        .plans-grid { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
+        .plan-card { background: #151922; border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 14px; padding: 20px; position: relative; }
+        .plan-card.popular { border-color: #45f3ff; background: linear-gradient(180deg, #151922 0%, #0f1c24 100%); }
+        .plan-card h4 { margin: 0 0 5px 0; font-size: 16px; color: white; }
+        .plan-price { font-size: 20px; font-weight: 700; color: white; margin-bottom: 12px; }
+        .plan-price span.strike { text-decoration: line-through; color: #ff0055; font-size: 14px; margin-right: 6px; }
+        .plan-price span.freq { font-size: 12px; color: #626d85; font-weight: 400; }
+        .plan-features { padding: 0; margin: 0 0 20px 0; list-style: none; font-size: 13px; color: #a9b7c6; }
+        .plan-features li { margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+        
+        .plan-btn { width: 100%; padding: 10px; border-radius: 8px; border: none; font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.2s; }
+        .plan-btn.secondary { background: rgba(255, 255, 255, 0.05); color: #8892b0; cursor: default; }
+        .plan-btn.active-state { background: rgba(69, 243, 255, 0.1); border: 1px solid rgba(69, 243, 255, 0.3); color: #45f3ff; cursor: default; }
+        .plan-btn.primary { background: #45f3ff; color: #060709; }
+        .plan-btn.primary:hover { background: #66fcf1; }
+
+        .output-box { background: #0b0c10; border: 1px solid rgba(255,255,255,0.05); border-left: 4px solid #45f3ff; padding: 20px; border-radius: 12px; margin-top: 25px; display: none; position: relative; }
+        .output-text { white-space: pre-wrap; font-family: monospace; color: #ffffff; font-size: 14px; line-height: 1.5; margin-top: 15px; }
+        .copy-btn { position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.05); color: #ffffff; padding: 4px 10px; font-size: 11px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; }
+        .copy-btn:hover { background: rgba(255,255,255,0.1); }
+
+        .footer { margin-top: 25px; text-align: center; font-size: 13px; color: #626d85; }
+        .footer a { color: #ff0000; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- ================= VIEW 1: MAIN INTERFACE ================= -->
+        <div id="appView" class="view active">
+            <div class="top-nav">
+                <button class="diamond-btn" onclick="switchView('pricingView')">💎 <span id="diamondText">Go Pro</span></button>
+            </div>
+            
+            <h1>PromptifyAI</h1>
+            <p class="subtitle">Engineered clarity for artificial intelligence</p>
+            
+            <label for="targetAI">Target Framework</label>
+            <select id="targetAI">
+                <option value="ChatGPT">ChatGPT</option>
+                <option value="Claude">Claude</option>
+                <option value="Gemini">Gemini</option>
+                <option value="Midjourney">Midjourney</option>
+            </select>
+
+            <label for="aiEngine">AI Compute Engine</label>
+            <select id="aiEngine" onchange="synchronizeUI()">
+                <option value="normal">Standard Engine (Gemini Flash)</option>
+                <option value="pro" id="proEngineOption" disabled>Advanced Engine (Gemini Pro) 🔒</option>
+            </select>
+
+            <label for="userIdea">Raw Concept</label>
+            <textarea id="userIdea" placeholder="What should the AI execute?"></textarea>
+
+            <div class="pro-toggle-container" onclick="catchFreeUsers(event)">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span style="font-weight: 500; color: white;">Multi-Prompt Matrix</span>
+                    <span style="font-size: 11px; color: #626d85;">Generate 3 variations simultaneously</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="pro-badge-pill" id="proBadge">Pro</span>
+                    <input type="checkbox" id="multiPrompt" disabled>
+                </div>
+            </div>
+
+            <button id="submitBtn" class="action-btn" onclick="optimizePrompt()">Optimize Output 🚀</button>
+            <p id="usageHint" class="usage-hint-text">Loading limits...</p>
+
+            <div id="outputContainer" class="output-box">
+                <button class="copy-btn" onclick="copyToClipboard()">Copy</button>
+                <div id="outputText" class="output-text"></div>
+            </div>
+        </div>
+
+        <!-- ================= VIEW 2: PRICING VIEW ================= -->
+        <div id="pricingView" class="view">
+            <div class="pricing-header-area">
+                <button class="back-to-app-btn" onclick="switchView('appView')">← Back</button>
+                <h1>Choose Membership</h1>
+                <p class="subtitle" style="margin-bottom: 0;">Unlock full computational access</p>
+            </div>
+
+            <div class="plans-grid">
+                <div class="plan-card" id="cardFreeTier">
+                    <h4>Basic Plan</h4>
+                    <div class="plan-price">$0 <span class="freq">/ forever</span></div>
+                    <ul class="plan-features">
+                        <li>✓ 35 Generations per day</li>
+                        <li>✓ Standard prompt model (Flash)</li>
+                        <li>✓ Single text processing pipelines</li>
+                    </ul>
+                    <button class="plan-btn secondary" id="btnFreeTierLabel">Current Plan</button>
+                </div>
+
+                <div class="plan-card popular" id="cardProTier">
+                    <div class="pro-badge-pill" style="position: absolute; top: 15px; right: 15px;">75% Off</div>
+                    <h4>Pro Membership</h4>
+                    <div class="plan-price"><span class="strike">$10</span>$1.99 <span class="freq">/ month</span></div>
+                    <ul class="plan-features">
+                        <li>⚡ Unlimited standard generations</li>
+                        <li>⚡ Access to Gemini Pro Model</li>
+                        <li>⚡ Multi-Prompt Matrix generation</li>
+                        <li>⚡ Zero UI banner interference</li>
+                    </ul>
+                    <!-- REPLACE THE LINK BELOW WITH YOUR GUMROAD URL -->
+                    <button class="plan-btn primary" id="btnProTierLabel" onclick="window.location.href='YOUR_GUMROAD_LINK_HERE'">Upgrade Account</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Created by <a href="https://www.youtube.com/@IamNotWinterYT" target="_blank">IamNotWinterYT 🎬</a>
+    </div>
+
+    <script>
+        const FREE_DAILY_MAX = 35;
+        const PRO_MODEL_DAILY_MAX = 50; 
+        
+        let accountTier = localStorage.getItem('promptify_tier') || 'free';
+
+        // Payment Detector
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('payment') === 'success') {
+                accountTier = 'pro';
+                localStorage.setItem('promptify_tier', 'pro');
+                window.history.replaceState({}, document.title, window.location.pathname);
+                alert('🎉 Payment Successful! Welcome to PromptifyAI Pro.');
+                synchronizeUI();
+            }
+        });
+
+        resetUsageLogsOnNewDay();
+        synchronizeUI();
+
+        function resetUsageLogsOnNewDay() {
+            const todayStamp = new Date().toDateString();
+            if (localStorage.getItem('promptify_date') !== todayStamp) {
+                localStorage.setItem('promptify_date', todayStamp);
+                localStorage.setItem('promptify_usage_metric', '0'); 
+                localStorage.setItem('promptify_pro_model_metric', '0'); 
+            }
+        }
+
+        function getMetric(type) { return parseInt(localStorage.getItem(type) || '0', 10); }
+        function incrementMetric(type) { localStorage.setItem(type, (getMetric(type) + 1).toString()); }
+
+        function switchView(viewId) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+        }
+
+        function synchronizeUI() {
+            const normalUses = getMetric('promptify_usage_metric');
+            const proUses = getMetric('promptify_pro_model_metric');
+            const selectedEngine = document.getElementById('aiEngine').value;
+            
+            const usageHint = document.getElementById('usageHint');
+            const submitBtn = document.getElementById('submitBtn');
+            const multiPrompt = document.getElementById('multiPrompt');
+            const proBadge = document.getElementById('proBadge');
+            const diamondText = document.getElementById('diamondText');
+            const proEngineOption = document.getElementById('proEngineOption');
+            
+            const cardFree = document.getElementById('cardFreeTier');
+            const btnFreeLabel = document.getElementById('btnFreeTierLabel');
+            const cardPro = document.getElementById('cardProTier');
+            const btnProLabel = document.getElementById('btnProTierLabel');
+
+            if (accountTier === 'pro') {
+                diamondText.innerText = 'Pro Active 👑';
+                multiPrompt.disabled = false;
+                proBadge.style.display = 'none';
+                proEngineOption.disabled = false;
+                proEngineOption.innerText = "Advanced Engine (Gemini Pro)";
+
+                if (selectedEngine === 'pro') {
+                    usageHint.innerText = `Premium Compute: ${PRO_MODEL_DAILY_MAX - proUses} high-tier executions remaining today`;
+                    submitBtn.disabled = (proUses >= PRO_MODEL_DAILY_MAX);
+                    submitBtn.innerText = submitBtn.disabled ? 'Daily Pro Compute Limit Reached! 🛑' : 'Optimize Output 🚀';
+                } else {
+                    usageHint.innerText = "Standard Compute: Unlimited Access ⚡";
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = 'Optimize Output 🚀';
+                }
+
+                cardFree.style.borderColor = 'rgba(255, 255, 255, 0.05)';
+                btnFreeLabel.innerText = 'Downgrade via billing provider';
+                btnFreeLabel.className = 'plan-btn secondary';
+                
+                cardPro.style.borderColor = '#45f3ff';
+                btnProLabel.innerText = 'Active Plan';
+                btnProLabel.className = 'plan-btn active-state';
+                btnProLabel.removeAttribute('onclick');
+
+            } else {
+                diamondText.innerText = 'Go Pro';
+                multiPrompt.disabled = true;
+                multiPrompt.checked = false;
+                proBadge.style.display = 'inline-block';
+                proEngineOption.disabled = true;
+                document.getElementById('aiEngine').value = 'normal';
+                
+                usageHint.innerText = `${FREE_DAILY_MAX - normalUses} free daily optimizations remaining`;
+                submitBtn.disabled = (normalUses >= FREE_DAILY_MAX);
+                submitBtn.innerText = submitBtn.disabled ? 'Daily Free Limit Hit! 🛑' : 'Optimize Output 🚀';
+
+                cardFree.style.borderColor = '#45f3ff';
+                btnFreeLabel.innerText = 'Active Plan';
+                btnFreeLabel.className = 'plan-btn active-state';
+                
+                cardPro.style.borderColor = '#45f3ff'; 
+                btnProLabel.innerText = 'Upgrade Account';
+                btnProLabel.className = 'plan-btn primary';
+                btnProLabel.setAttribute('onclick', "window.location.href='YOUR_GUMROAD_LINK_HERE'");
+            }
+        }
+
+        function catchFreeUsers(e) {
+            if (accountTier === 'free') {
+                e.preventDefault();
+                switchView('pricingView');
+            }
+        }
+
+        async function optimizePrompt() {
+            const targetAI = document.getElementById('targetAI').value;
+            const aiEngine = document.getElementById('aiEngine').value;
+            const userIdea = document.getElementById('userIdea').value;
+            const matrixMode = document.getElementById('multiPrompt').checked;
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const outputContainer = document.getElementById('outputContainer');
+            const outputText = document.getElementById('outputText');
+
+            if (!userIdea.trim()) return alert('Type something to engineer!');
+
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Engineering Structure... 🧠';
+            outputContainer.style.display = 'none';
+
+            try {
+                // REPLACE THIS WITH YOUR GLITCH OR VERCEL BACKEND URL
+                const BACKEND_URL = "https://your-backend-project.glitch.me/api/generate-prompt";
+                
+                const response = await fetch(BACKEND_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userIdea, targetAI, aiEngine, tier: accountTier, matrixMode })
+                });
+                
+                const data = await response.json();
+                if (data.error) throw new Error(data.error);
+
+                if (accountTier === 'free') {
+                    incrementMetric('promptify_usage_metric');
+                } else if (accountTier === 'pro' && aiEngine === 'pro') {
+                    incrementMetric('promptify_pro_model_metric');
+                }
+
+                outputText.innerText = data.optimizedPrompt;
+                outputContainer.style.display = 'block';
+            } catch (error) {
+                alert('Error: ' + error.message);
+            } finally {
+                synchronizeUI();
+            }
+        }
+
+        function copyToClipboard() {
+            const text = document.getElementById('outputText').innerText;
+            navigator.clipboard.writeText(text);
+            alert('Copied structure successfully!');
+        }
+    </script>
+</body>
+</html>
+
