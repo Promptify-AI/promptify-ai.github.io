@@ -251,12 +251,21 @@
         let accountTier = 'free';
         let currentUser = null;
 
-        // Auth Listener & Initial Check
+        // Auth Listener & Redirect Handling
+        firebase.auth().getRedirectResult().then((result) => {
+            if (result.user) {
+                currentUser = result.user;
+                checkProStatus(result.user.email);
+            }
+        }).catch((error) => {
+            console.error("Redirect Login Error:", error);
+        });
+
         firebase.auth().onAuthStateChanged((user) => {
             const authBtn = document.getElementById('authBtn');
             if (user) {
                 currentUser = user;
-                authBtn.innerText = user.email.split('@')[0]; // Show email prefix
+                authBtn.innerText = user.email.split('@')[0];
                 checkProStatus(user.email);
             } else {
                 currentUser = null;
@@ -273,9 +282,7 @@
                 }
             } else {
                 const provider = new firebase.auth.GoogleAuthProvider();
-                firebase.auth().signInWithPopup(provider).catch((error) => {
-                    alert('Login failed: ' + error.message);
-                });
+                firebase.auth().signInWithRedirect(provider);
             }
         }
 
@@ -435,3 +442,4 @@
     </script>
 </body>
 </html>
+
