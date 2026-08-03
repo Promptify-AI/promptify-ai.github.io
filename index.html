@@ -251,29 +251,37 @@
         let accountTier = 'free';
         let currentUser = null;
 
-        // Auth Listener & Redirect Handling
+        // Catch Login Redirect Results immediately on load
         firebase.auth().getRedirectResult().then((result) => {
-            if (result.user) {
+            if (result && result.user) {
                 currentUser = result.user;
+                updateAuthButtonUI(result.user);
                 checkProStatus(result.user.email);
             }
         }).catch((error) => {
             console.error("Redirect Login Error:", error);
+            alert("Login failed: " + error.message);
         });
 
+        // Auth State Observer
         firebase.auth().onAuthStateChanged((user) => {
-            const authBtn = document.getElementById('authBtn');
             if (user) {
                 currentUser = user;
-                authBtn.innerText = user.email.split('@')[0];
+                updateAuthButtonUI(user);
                 checkProStatus(user.email);
             } else {
                 currentUser = null;
                 accountTier = 'free';
-                authBtn.innerText = 'Sign In';
+                document.getElementById('authBtn').innerText = 'Sign In';
                 synchronizeUI();
             }
         });
+
+        function updateAuthButtonUI(user) {
+            const authBtn = document.getElementById('authBtn');
+            const displayName = user.displayName || user.email.split('@')[0];
+            authBtn.innerText = displayName;
+        }
 
         function handleAuthAction() {
             if (currentUser) {
@@ -282,7 +290,18 @@
                 }
             } else {
                 const provider = new firebase.auth.GoogleAuthProvider();
-                firebase.auth().signInWithRedirect(provider);
+                // Try Popup first; fall back to Redirect if mobile blocks popup
+                firebase.auth().signInWithPopup(provider).then((result) => {
+                    currentUser = result.user;
+                    updateAuthButtonUI(result.user);
+                    checkProStatus(result.user.email);
+                }).catch((error) => {
+                    if (error.code === 'auth/popup-blocked' || error.code === 'auth/popup-closed-by-user') {
+                        firebase.auth().signInWithRedirect(provider);
+                    } else {
+                        alert("Sign in error: " + error.message);
+                    }
+                });
             }
         }
 
@@ -442,4 +461,3 @@
     </script>
 </body>
 </html>
-
