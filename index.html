@@ -138,9 +138,35 @@
 
         .footer { margin-top: 25px; text-align: center; font-size: 13px; color: #626d85; }
         .footer a { color: #ff0000; text-decoration: none; font-weight: bold; }
+
+        /* Auto Sign-up Modal Overlay */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); display: none; justify-content: center;
+            align-items: center; z-index: 1000; backdrop-filter: blur(5px);
+        }
+        .modal-card {
+            background: #0f111a; border: 1px solid rgba(69, 243, 255, 0.3);
+            border-radius: 20px; padding: 30px; width: 85%; max-width: 380px;
+            text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.8); position: relative;
+        }
+        .modal-close-btn {
+            position: absolute; top: 12px; right: 15px; background: none;
+            border: none; color: #8892b0; font-size: 18px; cursor: pointer;
+        }
     </style>
 </head>
 <body>
+
+    <!-- AUTO SIGN-UP POPUP MODAL -->
+    <div id="signUpModal" class="modal-overlay">
+        <div class="modal-card">
+            <button class="modal-close-btn" onclick="closeModal()">✕</button>
+            <h2 style="color: white; margin-top: 0; font-size: 22px;">Welcome to PromptifyAI</h2>
+            <p style="color: #8892b0; font-size: 13px; margin-bottom: 20px;">Sign in with Google to sync your optimizations across devices and manage your subscription.</p>
+            <button class="action-btn" style="margin-top: 0;" onclick="handleModalLogin()">Sign in with Google 🚀</button>
+        </div>
+    </div>
 
     <div class="container">
         
@@ -244,6 +270,7 @@
         };
         
         firebase.initializeApp(firebaseConfig);
+        firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 
         const FREE_DAILY_MAX = 35;
         const PRO_MODEL_DAILY_MAX = 50; 
@@ -251,56 +278,47 @@
         let accountTier = 'free';
         let currentUser = null;
 
-        // Catch Login Redirect Results immediately on load
-        firebase.auth().getRedirectResult().then((result) => {
-            if (result && result.user) {
-                currentUser = result.user;
-                updateAuthButtonUI(result.user);
-                checkProStatus(result.user.email);
-            }
-        }).catch((error) => {
-            console.error("Redirect Login Error:", error);
-            alert("Login failed: " + error.message);
-        });
+        // Modal triggers
+        function closeModal() {
+            document.getElementById('signUpModal').style.display = 'none';
+        }
 
-        // Auth State Observer
+        function handleModalLogin() {
+            closeModal();
+            handleAuthAction();
+        }
+
+        // Permanent Auth Observer
         firebase.auth().onAuthStateChanged((user) => {
+            const authBtn = document.getElementById('authBtn');
+            const modal = document.getElementById('signUpModal');
+            
             if (user) {
                 currentUser = user;
-                updateAuthButtonUI(user);
+                authBtn.innerText = user.displayName || user.email.split('@')[0];
+                modal.style.display = 'none'; // Hide pop-up if logged in
                 checkProStatus(user.email);
             } else {
                 currentUser = null;
                 accountTier = 'free';
-                document.getElementById('authBtn').innerText = 'Sign In';
+                authBtn.innerText = 'Sign In';
+                modal.style.display = 'flex'; // Trigger Sign-up popup on arrival
                 synchronizeUI();
             }
         });
 
-        function updateAuthButtonUI(user) {
-            const authBtn = document.getElementById('authBtn');
-            const displayName = user.displayName || user.email.split('@')[0];
-            authBtn.innerText = displayName;
-        }
-
         function handleAuthAction() {
             if (currentUser) {
-                if (confirm("Do you want to sign out?")) {
+                if (confirm("Sign out of your account?")) {
                     firebase.auth().signOut();
                 }
             } else {
                 const provider = new firebase.auth.GoogleAuthProvider();
-                // Try Popup first; fall back to Redirect if mobile blocks popup
                 firebase.auth().signInWithPopup(provider).then((result) => {
                     currentUser = result.user;
-                    updateAuthButtonUI(result.user);
                     checkProStatus(result.user.email);
                 }).catch((error) => {
-                    if (error.code === 'auth/popup-blocked' || error.code === 'auth/popup-closed-by-user') {
-                        firebase.auth().signInWithRedirect(provider);
-                    } else {
-                        alert("Sign in error: " + error.message);
-                    }
+                    alert("Sign in failed: " + error.message);
                 });
             }
         }
@@ -461,3 +479,4 @@
     </script>
 </body>
 </html>
+
