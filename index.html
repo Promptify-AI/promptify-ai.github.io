@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+here<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -83,8 +83,15 @@
         label { font-weight: 500; display: block; margin: 20px 0 8px; color: #8892b0; font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; }
 
         select, textarea { 
-            width: 100%; padding: 14px; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; box-sizing: border-box; 
-            font-size: 14px; background-color: #151922; color: #ffffff; transition: all 0.2s; 
+            width: 100%; 
+            padding: 14px; 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            border-radius: 12px; 
+            box-sizing: border-box; 
+            font-size: 14px; 
+            background-color: #151922; 
+            color: #ffffff; 
+            transition: all 0.2s; 
         }
         select:focus, textarea:focus { border-color: #45f3ff; outline: none; box-shadow: 0 0 0 3px rgba(69, 243, 255, 0.1); }
         select option { background-color: #151922; color: #ffffff; }
@@ -92,19 +99,40 @@
         textarea { resize: none; height: 110px; }
 
         .pro-toggle-container {
-            margin-top: 15px; display: flex; align-items: center; justify-content: space-between;
-            background: rgba(255, 255, 255, 0.02); padding: 12px 16px; border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.05); font-size: 13px; color: #a9b7c6;
+            margin-top: 15px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.02); 
+            padding: 12px 16px; 
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05); 
+            font-size: 13px; 
+            color: #a9b7c6;
         }
         .pro-toggle-container input { cursor: pointer; }
         .pro-badge-pill {
-            background: linear-gradient(90deg, #ff0055, #ff5500); color: white; font-size: 9px;
-            font-weight: 700; padding: 2px 6px; border-radius: 20px; text-transform: uppercase;
+            background: linear-gradient(90deg, #ff0055, #ff5500); 
+            color: white; 
+            font-size: 9px;
+            font-weight: 700; 
+            padding: 2px 6px; 
+            border-radius: 20px; 
+            text-transform: uppercase;
         }
 
         .action-btn { 
-            width: 100%; background: #ffffff; color: #060709; border: none; padding: 16px; 
-            font-size: 15px; font-weight: 600; border-radius: 12px; cursor: pointer; margin-top: 20px; transition: all 0.2s; 
+            width: 100%; 
+            background: #ffffff; 
+            color: #060709; 
+            border: none; 
+            padding: 16px; 
+            font-size: 15px; 
+            font-weight: 600; 
+            border-radius: 12px; 
+            cursor: pointer; 
+            margin-top: 20px; 
+            transition: all 0.2s; 
         }
         .action-btn:hover { background: #45f3ff; box-shadow: 0 5px 15px rgba(69, 243, 255, 0.2); }
         .action-btn:disabled { background: #1f242e; color: #4a5568; cursor: not-allowed; box-shadow: none; }
@@ -131,9 +159,29 @@
         .plan-btn.primary { background: #45f3ff; color: #060709; }
         .plan-btn.primary:hover { background: #66fcf1; }
 
-        .output-box { background: #0b0c10; border: 1px solid rgba(255,255,255,0.05); border-left: 4px solid #45f3ff; padding: 20px; border-radius: 12px; margin-top: 25px; display: none; position: relative; }
+        .output-box { 
+            background: #0b0c10; 
+            border: 1px solid rgba(255,255,255,0.05); 
+            border-left: 4px solid #45f3ff; 
+            padding: 20px; 
+            border-radius: 12px; 
+            margin-top: 25px; 
+            display: none; 
+            position: relative; 
+        }
         .output-text { white-space: pre-wrap; font-family: monospace; color: #ffffff; font-size: 14px; line-height: 1.5; margin-top: 15px; }
-        .copy-btn { position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.05); color: #ffffff; padding: 4px 10px; font-size: 11px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; }
+        .copy-btn { 
+            position: absolute; 
+            top: 12px; 
+            right: 12px; 
+            background: rgba(255,255,255,0.05); 
+            color: #ffffff; 
+            padding: 4px 10px; 
+            font-size: 11px; 
+            border-radius: 6px; 
+            border: 1px solid rgba(255,255,255,0.1); 
+            cursor: pointer; 
+        }
         .copy-btn:hover { background: rgba(255,255,255,0.1); }
 
         .footer { margin-top: 25px; text-align: center; font-size: 13px; color: #626d85; }
@@ -141,18 +189,38 @@
 
         /* Auto Sign-up Modal Overlay */
         .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85); display: none; justify-content: center;
-            align-items: center; z-index: 1000; backdrop-filter: blur(5px);
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85); 
+            display: none; 
+            justify-content: center;
+            align-items: center; 
+            z-index: 1000; 
+            backdrop-filter: blur(5px);
         }
         .modal-card {
-            background: #0f111a; border: 1px solid rgba(69, 243, 255, 0.3);
-            border-radius: 20px; padding: 30px; width: 85%; max-width: 380px;
-            text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.8); position: relative;
+            background: #0f111a; 
+            border: 1px solid rgba(69, 243, 255, 0.3);
+            border-radius: 20px; 
+            padding: 30px; 
+            width: 85%; 
+            max-width: 380px;
+            text-align: center; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8); 
+            position: relative;
         }
         .modal-close-btn {
-            position: absolute; top: 12px; right: 15px; background: none;
-            border: none; color: #8892b0; font-size: 18px; cursor: pointer;
+            position: absolute; 
+            top: 12px; 
+            right: 15px; 
+            background: none;
+            border: none; 
+            color: #8892b0; 
+            font-size: 18px; 
+            cursor: pointer;
         }
     </style>
 </head>
@@ -247,7 +315,7 @@
                         <li>⚡ Multi-Prompt Matrix generation</li>
                         <li>⚡ Zero UI banner interference</li>
                     </ul>
-                    <button class="plan-btn primary" id="btnProTierLabel" onclick="window.location.href='https://www.buymeacoffee.com/shauyabhindi'">Upgrade Account</button>
+                    <button class="plan-btn primary" id="btnProTierLabel" onclick="window.location.href='https://www.buymeacoffee.com/WinterStudioOfficial/membership'">Upgrade Account</button>
                 </div>
             </div>
         </div>
@@ -347,8 +415,13 @@
             }
         }
 
-        function getMetric(type) { return parseInt(localStorage.getItem(type) || '0', 10); }
-        function incrementMetric(type) { localStorage.setItem(type, (getMetric(type) + 1).toString()); }
+        function getMetric(type) { 
+            return parseInt(localStorage.getItem(type) || '0', 10); 
+        }
+        
+        function incrementMetric(type) { 
+            localStorage.setItem(type, (getMetric(type) + 1).toString()); 
+        }
 
         function switchView(viewId) {
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
@@ -417,7 +490,7 @@
                 cardPro.style.borderColor = '#45f3ff'; 
                 btnProLabel.innerText = 'Upgrade Account';
                 btnProLabel.className = 'plan-btn primary';
-                btnProLabel.setAttribute('onclick', "window.location.href='https://www.buymeacoffee.com/shauyabhindi'");
+                btnProLabel.setAttribute('onclick', "window.location.href='https://www.buymeacoffee.com/WinterStudioOfficial/membership'");
             }
         }
 
@@ -479,4 +552,3 @@
     </script>
 </body>
 </html>
-
