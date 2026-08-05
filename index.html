@@ -5,17 +5,20 @@
      crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Prompt Optimizer | By IamNotWinterYT</title>
+    <title>PromptifyAI | AI Prompt Optimizer & Engineering Suite</title>
+    <meta name="description" content="Optimize, structure, and refine raw text concepts for ChatGPT, Claude, Gemini, and Midjourney.">
     
     <!-- Firebase SDK Scripts -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 
     <style>
-        /* Modern Minimalist Midnight Theme */
+        /* Cyberpunk Pulse Animated Theme */
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-            background-color: #060709; 
+            background: linear-gradient(-45deg, #040d12, #1a0b2e, #00303b, #0d0722);
+            background-size: 400% 400%;
+            animation: cyanPurpleGlow 10s ease infinite;
             color: #e2e8f0; 
             margin: 0; 
             padding: 20px; 
@@ -27,14 +30,21 @@
             box-sizing: border-box;
         }
 
+        @keyframes cyanPurpleGlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         .container { 
             background: #0f111a; 
             padding: 25px 30px 30px 30px; 
             border-radius: 20px; 
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7); 
+            /* Glowing Neon Cyan Border for Main App Container */
+            border: 2px solid #45f3ff;
+            box-shadow: 0 0 20px rgba(69, 243, 255, 0.35), inset 0 0 15px rgba(69, 243, 255, 0.1); 
             width: 100%; 
-            max-width: 480px; 
-            border: 1px solid rgba(102, 252, 241, 0.1);
+            max-width: 520px; 
             position: relative;
             transition: all 0.3s ease;
         }
@@ -52,22 +62,25 @@
 
         .auth-btn {
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(69, 243, 255, 0.4);
             color: #ffffff;
-            padding: 6px 12px;
+            padding: 6px 14px;
             border-radius: 20px;
             font-size: 12px;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.2s ease;
         }
-        .auth-btn:hover { background: rgba(255, 255, 255, 0.15); }
+        .auth-btn:hover { 
+            background: rgba(69, 243, 255, 0.15); 
+            box-shadow: 0 0 10px rgba(69, 243, 255, 0.3);
+        }
 
         .diamond-btn {
             background: rgba(69, 243, 255, 0.1);
-            border: 1px solid rgba(69, 243, 255, 0.3);
+            border: 1px solid #45f3ff;
             color: #45f3ff;
-            padding: 6px 12px;
+            padding: 6px 14px;
             border-radius: 20px;
             font-size: 13px;
             font-weight: 600;
@@ -76,8 +89,13 @@
             align-items: center;
             gap: 5px;
             transition: all 0.2s ease;
+            box-shadow: 0 0 10px rgba(69, 243, 255, 0.2);
         }
-        .diamond-btn:hover { background: #45f3ff; color: #060709; box-shadow: 0 0 15px rgba(69, 243, 255, 0.3); }
+        .diamond-btn:hover { 
+            background: #45f3ff; 
+            color: #060709; 
+            box-shadow: 0 0 20px rgba(69, 243, 255, 0.6); 
+        }
 
         h1 { color: #ffffff; margin: 0 0 6px 0; text-align: center; font-size: 26px; font-weight: 700; letter-spacing: -0.5px; }
         p.subtitle { text-align: center; color: #8892b0; margin-top: 0; margin-bottom: 25px; font-size: 14px; }
@@ -87,7 +105,7 @@
         select, textarea { 
             width: 100%; 
             padding: 14px; 
-            border: 1px solid rgba(255, 255, 255, 0.1); 
+            border: 1px solid rgba(69, 243, 255, 0.2); 
             border-radius: 12px; 
             box-sizing: border-box; 
             font-size: 14px; 
@@ -95,7 +113,11 @@
             color: #ffffff; 
             transition: all 0.2s; 
         }
-        select:focus, textarea:focus { border-color: #45f3ff; outline: none; box-shadow: 0 0 0 3px rgba(69, 243, 255, 0.1); }
+        select:focus, textarea:focus { 
+            border-color: #45f3ff; 
+            outline: none; 
+            box-shadow: 0 0 12px rgba(69, 243, 255, 0.3); 
+        }
         select option { background-color: #151922; color: #ffffff; }
         
         textarea { resize: none; height: 110px; }
@@ -108,9 +130,10 @@
             background: rgba(255, 255, 255, 0.02); 
             padding: 12px 16px; 
             border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.05); 
+            border: 1px solid rgba(69, 243, 255, 0.15); 
             font-size: 13px; 
             color: #a9b7c6;
+            cursor: pointer;
         }
         .pro-toggle-container input { cursor: pointer; }
         .pro-badge-pill {
@@ -123,11 +146,12 @@
             text-transform: uppercase;
         }
 
+        /* Main Submit Button with Cyan Glow Line */
         .action-btn { 
             width: 100%; 
             background: #ffffff; 
             color: #060709; 
-            border: none; 
+            border: 2px solid #45f3ff; 
             padding: 16px; 
             font-size: 15px; 
             font-weight: 600; 
@@ -135,9 +159,19 @@
             cursor: pointer; 
             margin-top: 20px; 
             transition: all 0.2s; 
+            box-shadow: 0 0 15px rgba(69, 243, 255, 0.25);
         }
-        .action-btn:hover { background: #45f3ff; box-shadow: 0 5px 15px rgba(69, 243, 255, 0.2); }
-        .action-btn:disabled { background: #1f242e; color: #4a5568; cursor: not-allowed; box-shadow: none; }
+        .action-btn:hover { 
+            background: #45f3ff; 
+            box-shadow: 0 0 25px rgba(69, 243, 255, 0.6); 
+        }
+        .action-btn:disabled { 
+            background: #1f242e; 
+            color: #4a5568; 
+            border-color: rgba(255, 255, 255, 0.1); 
+            cursor: not-allowed; 
+            box-shadow: none; 
+        }
 
         .usage-hint-text { text-align: center; font-size: 12px; color: #626d85; margin-top: 12px; margin-bottom: 0; }
 
@@ -147,7 +181,7 @@
 
         .plans-grid { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
         .plan-card { background: #151922; border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 14px; padding: 20px; position: relative; }
-        .plan-card.popular { border-color: #45f3ff; background: linear-gradient(180deg, #151922 0%, #0f1c24 100%); }
+        .plan-card.popular { border-color: #45f3ff; background: linear-gradient(180deg, #151922 0%, #0f1c24 100%); box-shadow: 0 0 15px rgba(69, 243, 255, 0.2); }
         .plan-card h4 { margin: 0 0 5px 0; font-size: 16px; color: white; }
         .plan-price { font-size: 20px; font-weight: 700; color: white; margin-bottom: 12px; }
         .plan-price span.strike { text-decoration: line-through; color: #ff0055; font-size: 14px; margin-right: 6px; }
@@ -158,38 +192,58 @@
         .plan-btn { width: 100%; padding: 10px; border-radius: 8px; border: none; font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.2s; }
         .plan-btn.secondary { background: rgba(255, 255, 255, 0.05); color: #8892b0; cursor: default; }
         .plan-btn.active-state { background: rgba(69, 243, 255, 0.1); border: 1px solid rgba(69, 243, 255, 0.3); color: #45f3ff; cursor: default; }
-        .plan-btn.primary { background: #45f3ff; color: #060709; }
-        .plan-btn.primary:hover { background: #66fcf1; }
+        .plan-btn.primary { background: #45f3ff; color: #060709; border: 1px solid #45f3ff; box-shadow: 0 0 10px rgba(69, 243, 255, 0.3); }
+        .plan-btn.primary:hover { background: #66fcf1; box-shadow: 0 0 20px rgba(69, 243, 255, 0.5); }
 
         .output-box { 
             background: #0b0c10; 
-            border: 1px solid rgba(255,255,255,0.05); 
+            border: 1px solid rgba(69, 243, 255, 0.3); 
             border-left: 4px solid #45f3ff; 
             padding: 20px; 
             border-radius: 12px; 
             margin-top: 25px; 
             display: none; 
             position: relative; 
+            box-shadow: 0 0 15px rgba(69, 243, 255, 0.15);
         }
         .output-text { white-space: pre-wrap; font-family: monospace; color: #ffffff; font-size: 14px; line-height: 1.5; margin-top: 15px; }
         .copy-btn { 
             position: absolute; 
             top: 12px; 
             right: 12px; 
-            background: rgba(255,255,255,0.05); 
-            color: #ffffff; 
+            background: rgba(69, 243, 255, 0.1); 
+            color: #45f3ff; 
             padding: 4px 10px; 
             font-size: 11px; 
             border-radius: 6px; 
-            border: 1px solid rgba(255,255,255,0.1); 
+            border: 1px solid #45f3ff; 
             cursor: pointer; 
         }
-        .copy-btn:hover { background: rgba(255,255,255,0.1); }
+        .copy-btn:hover { background: #45f3ff; color: #060709; }
 
-        .footer { margin-top: 25px; text-align: center; font-size: 13px; color: #626d85; }
-        .footer a { color: #ff0000; text-decoration: none; font-weight: bold; }
+        /* Ad Placement Area */
+        .ad-slot-container {
+            margin-top: 25px;
+            width: 100%;
+            text-align: center;
+            min-height: 90px;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px dashed rgba(69, 243, 255, 0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-        /* Auto Sign-up Modal Overlay */
+        /* Footer & Navigation Links */
+        .footer { margin-top: 25px; text-align: center; font-size: 12px; color: #626d85; line-height: 1.8; }
+        .footer-nav { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 10px; }
+        .footer-nav button { background: none; border: none; color: #8892b0; font-size: 12px; cursor: pointer; padding: 0; text-decoration: underline; }
+        .footer-nav button:hover { color: #45f3ff; }
+        .footer a { color: #45f3ff; text-decoration: none; font-weight: bold; }
+        .footer a:hover { text-decoration: underline; }
+
+        /* Modal Overlays for Legal/Policy Pages */
         .modal-overlay {
             position: fixed; 
             top: 0; 
@@ -205,18 +259,24 @@
         }
         .modal-card {
             background: #0f111a; 
-            border: 1px solid rgba(69, 243, 255, 0.3);
+            border: 2px solid #45f3ff;
             border-radius: 20px; 
             padding: 30px; 
             width: 85%; 
-            max-width: 380px;
-            text-align: center; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8); 
+            max-width: 420px;
+            max-height: 80vh;
+            overflow-y: auto;
+            text-align: left; 
+            box-shadow: 0 0 30px rgba(69, 243, 255, 0.4); 
             position: relative;
+            color: #a9b7c6;
+            font-size: 13px;
+            line-height: 1.6;
         }
+        .modal-card h2, .modal-card h3 { color: #ffffff; margin-top: 0; }
         .modal-close-btn {
             position: absolute; 
-            top: 12px; 
+            top: 15px; 
             right: 15px; 
             background: none;
             border: none; 
@@ -224,17 +284,65 @@
             font-size: 18px; 
             cursor: pointer;
         }
+        .modal-close-btn:hover { color: #ffffff; }
     </style>
 </head>
 <body>
 
     <!-- AUTO SIGN-UP POPUP MODAL -->
     <div id="signUpModal" class="modal-overlay">
-        <div class="modal-card">
-            <button class="modal-close-btn" onclick="closeModal()">✕</button>
+        <div class="modal-card" style="text-align: center;">
+            <button class="modal-close-btn" onclick="closeModal('signUpModal')">✕</button>
             <h2 style="color: white; margin-top: 0; font-size: 22px;">Welcome to PromptifyAI</h2>
             <p style="color: #8892b0; font-size: 13px; margin-bottom: 20px;">Sign in with Google to sync your optimizations across devices and manage your subscription.</p>
             <button class="action-btn" style="margin-top: 0;" onclick="handleModalLogin()">Sign in with Google 🚀</button>
+        </div>
+    </div>
+
+    <!-- PRIVACY POLICY MODAL -->
+    <div id="privacyModal" class="modal-overlay">
+        <div class="modal-card">
+            <button class="modal-close-btn" onclick="closeModal('privacyModal')">✕</button>
+            <h2>Privacy Policy</h2>
+            <p><strong>Effective Date:</strong> August 2026</p>
+            <p>At <strong>PromptifyAI</strong>, accessible from <code>https://promptify-ai.github.io/</code>, your privacy is extremely important to us.</p>
+            
+            <h3>1. Information We Collect</h3>
+            <p>When you log in using Google Authentication, we collect basic profile details (email address and display name) strictly to manage account tiers and daily usage limits.</p>
+
+            <h3>2. Log Files & Analytics</h3>
+            <p>PromptifyAI follows standard log file procedures. These files log visitors when they use the application. The information collected includes internet protocol (IP) addresses, browser type, and timestamping.</p>
+
+            <h3>3. Cookies and Google AdSense</h3>
+            <p>Third-party vendors, including Google, use cookies to serve ads based on a user's prior visits to your website or other websites.</p>
+            <p>Google's use of advertising cookies enables it and its partners to serve ads to your users based on their visit to your sites and/or other sites on the Internet.</p>
+            <p>Users may opt out of personalized advertising by visiting Google's Ad Settings.</p>
+
+            <h3>4. Contact Us</h3>
+            <p>If you have additional questions or require more information about our Privacy Policy, contact us at: <strong>officialnotwinter@gmail.com</strong></p>
+        </div>
+    </div>
+
+    <!-- ABOUT US MODAL -->
+    <div id="aboutModal" class="modal-overlay">
+        <div class="modal-card">
+            <button class="modal-close-btn" onclick="closeModal('aboutModal')">✕</button>
+            <h2>About PromptifyAI</h2>
+            <p><strong>PromptifyAI</strong> is a web application designed to help developers, creators, and AI enthusiasts transform simple ideas into structured, high-performing prompts.</p>
+            <p>Whether you are targeting Large Language Models like ChatGPT, Claude, and Gemini, or visual generators like Midjourney, PromptifyAI optimizes your raw inputs to produce precise execution outputs.</p>
+            <p>Created and maintained by <strong>IamNotWinterYT</strong>.</p>
+        </div>
+    </div>
+
+    <!-- CONTACT US MODAL -->
+    <div id="contactModal" class="modal-overlay">
+        <div class="modal-card">
+            <button class="modal-close-btn" onclick="closeModal('contactModal')">✕</button>
+            <h2>Contact Us</h2>
+            <p>Have questions, issues, or business inquiries? We'd love to hear from you.</p>
+            <p><strong>Official Support Email:</strong><br><a href="mailto:officialnotwinter@gmail.com" style="color: #45f3ff;">officialnotwinter@gmail.com</a></p>
+            <p><strong>YouTube Channel:</strong><br><a href="https://www.youtube.com/@IamNotWinterYT" target="_blank" style="color: #45f3ff;">IamNotWinterYT</a></p>
+            <p>We aim to respond to all email inquiries within 24–48 hours.</p>
         </div>
     </div>
 
@@ -285,6 +393,19 @@
                 <button class="copy-btn" onclick="copyToClipboard()">Copy</button>
                 <div id="outputText" class="output-text"></div>
             </div>
+
+            <!-- AdSense Ad Container Slot -->
+            <div class="ad-slot-container">
+                <ins class="adsbygoogle"
+                     style="display:block; width: 100%; height: 90px;"
+                     data-ad-client="ca-pub-7567086484880773"
+                     data-ad-slot="auto"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
         </div>
 
         <!-- ================= VIEW 2: PRICING VIEW ================= -->
@@ -323,8 +444,15 @@
         </div>
     </div>
 
+    <!-- FOOTER WITH LEGAL & NAV LINKS -->
     <div class="footer">
-        Created by <a href="https://www.youtube.com/@IamNotWinterYT" target="_blank">IamNotWinterYT 🎬</a>
+        <div class="footer-nav">
+            <button onclick="openModal('privacyModal')">Privacy Policy</button>
+            <button onclick="openModal('aboutModal')">About Us</button>
+            <button onclick="openModal('contactModal')">Contact Us</button>
+        </div>
+        <div>Created by <a href="https://www.youtube.com/@IamNotWinterYT" target="_blank">IamNotWinterYT 🎬</a></div>
+        <div>© 2026 PromptifyAI. All rights reserved.</div>
     </div>
 
     <script>
@@ -349,12 +477,16 @@
         let currentUser = null;
 
         // Modal triggers
-        function closeModal() {
-            document.getElementById('signUpModal').style.display = 'none';
+        function openModal(id) {
+            document.getElementById(id).style.display = 'flex';
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
         }
 
         function handleModalLogin() {
-            closeModal();
+            closeModal('signUpModal');
             handleAuthAction();
         }
 
