@@ -18,7 +18,7 @@
     <!-- Google Search Console -->
     <meta name="google-site-verification" content="rR3AAzaXK403kc1Tcy3VDTRgM_oDfAgQjU7pgL4Syuw" />
     
-    <!-- Firebase SDK -->
+    <!-- Firebase SDK - MUST load before any script -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 
@@ -728,18 +728,13 @@
                 font-size: 12px;
             }
 
-            /* Fix button alignment & centered stack on mobile */
             .landing-hero > div:last-child {
                 flex-direction: column;
-                align-items: center;
                 width: 100%;
-                gap: 12px;
             }
 
             .landing-hero > div:last-child .cta-button {
                 width: 100%;
-                max-width: 280px;
-                margin-left: 0 !important;
             }
 
             .pricing-card {
@@ -1126,43 +1121,43 @@
 
         function handleGoogleSignIn() {
             const provider = new firebase.auth.GoogleAuthProvider();
-            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            provider.setCustomParameters({
+                'prompt': 'consent'
+            });
 
-            if (isMobile) {
-                firebase.auth().signInWithRedirect(provider);
-            } else {
-                firebase.auth().signInWithPopup(provider)
-                    .then((result) => {
-                        currentUser = result.user;
-                        closeAuthModal();
-                        checkProStatus(result.user.email);
-                    })
-                    .catch((error) => {
-                        alert("Sign in failed: " + error.message);
-                    });
-            }
-        }
-
-        // Handle redirect result after mobile Google sign-in
-        firebase.auth().getRedirectResult()
-            .then((result) => {
-                if (result && result.user) {
+            firebase.auth().signInWithPopup(provider)
+                .then((result) => {
                     currentUser = result.user;
                     closeAuthModal();
                     checkProStatus(result.user.email);
-                }
-            })
-            .catch((error) => {
-                if (error.code) {
-                    alert("Sign in failed: " + error.message);
-                }
-            });
+                })
+                .catch((error) => {
+                    console.error("Sign in error:", error);
+                    if (error.code === 'auth/popup-blocked') {
+                        alert("Sign in popup was blocked. Please enable popups and try again.");
+                    } else if (error.code === 'auth/cancelled-popup-request') {
+                        console.log("Sign in cancelled");
+                    } else {
+                        alert("Sign in failed: " + error.message);
+                    }
+                });
+        }
+
+        // Handle redirect result for mobile
+        firebase.auth().getRedirectResult().then((result) => {
+            if (result && result.user) {
+                currentUser = result.user;
+                checkProStatus(result.user.email);
+            }
+        }).catch((error) => {
+            if (error.code) console.error("Redirect error:", error);
+        });
 
         firebase.auth().onAuthStateChanged((user) => {
             const authBtn = document.getElementById('authBtn');
             if (user) {
                 currentUser = user;
-                closeAuthModal(); // Always ensure modal is closed when signed in
+                closeAuthModal(); // Close modal when user logs in
                 authBtn.innerText = user.displayName || user.email.split('@')[0];
                 checkProStatus(user.email);
             } else {
@@ -1205,7 +1200,7 @@
 
         // ========== UI SYNC ==========
         function synchronizeUI() {
-            resetUsageOnNewDay();
+            resetUsageOnNewDay(); // Check if day changed and reset if needed
             const normalUses = getMetric('promptify_usage_metric');
             const proUses = getMetric('promptify_pro_model_metric');
             const selectedEngine = document.getElementById('aiEngine').value;
@@ -1235,7 +1230,7 @@
                 proEngineOption.disabled = true;
                 proBadge.style.display = 'inline-block';
                 document.getElementById('aiEngine').value = 'normal';
-                document.getElementById('aiEngine').disabled = false;
+                document.getElementById('aiEngine').disabled = false; // Ensure dropdown itself stays enabled
 
                 usageHint.innerText = `${FREE_DAILY_MAX - normalUses} free daily optimizations remaining`;
                 submitBtn.disabled = (normalUses >= FREE_DAILY_MAX);
@@ -1263,6 +1258,7 @@
 
             if (!userIdea.trim()) return alert('Please enter an idea to optimize');
 
+            // Disable all inputs during optimization
             document.getElementById('userIdea').disabled = true;
             document.getElementById('targetAI').disabled = true;
             document.getElementById('aiEngine').disabled = true;
@@ -1293,11 +1289,12 @@
             } catch (error) {
                 alert('Error: ' + error.message);
             } finally {
+                // Re-enable inputs
                 document.getElementById('userIdea').disabled = false;
                 document.getElementById('targetAI').disabled = false;
                 document.getElementById('aiEngine').disabled = false;
                 
-                synchronizeUI();
+                synchronizeUI(); // This will re-disable multiPrompt if free user
             }
         }
 
@@ -1335,10 +1332,12 @@
         }
 
         // ========== MODAL CLOSE HANDLERS ==========
+        // Close modal when clicking backdrop
         document.getElementById('authModal').addEventListener('click', function(e) {
             if (e.target === this) closeAuthModal();
         });
 
+        // Close modal with Escape key
         window.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') closeAuthModal();
         });
