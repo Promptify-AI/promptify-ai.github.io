@@ -1125,33 +1125,43 @@
                 'prompt': 'consent'
             });
 
-            firebase.auth().signInWithPopup(provider)
-                .then((result) => {
-                    currentUser = result.user;
-                    closeAuthModal();
-                    checkProStatus(result.user.email);
-                })
-                .catch((error) => {
-                    console.error("Sign in error:", error);
-                    if (error.code === 'auth/popup-blocked') {
-                        alert("Sign in popup was blocked. Please enable popups and try again.");
-                    } else if (error.code === 'auth/cancelled-popup-request') {
-                        console.log("Sign in cancelled");
-                    } else {
-                        alert("Sign in failed: " + error.message);
-                    }
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+            if (isMobile) {
+                // Use redirect on mobile (more reliable)
+                firebase.auth().signInWithRedirect(provider).catch((error) => {
+                    console.error("Redirect sign in error:", error);
+                    alert("Sign in failed: " + error.message);
                 });
+            } else {
+                // Use popup on desktop
+                firebase.auth().signInWithPopup(provider)
+                    .then((result) => {
+                        currentUser = result.user;
+                        closeAuthModal();
+                        checkProStatus(result.user.email);
+                    })
+                    .catch((error) => {
+                        console.error("Sign in error:", error);
+                        alert("Sign in failed: " + error.message);
+                    });
+            }
         }
 
-        // Handle redirect result for mobile
-        firebase.auth().getRedirectResult().then((result) => {
-            if (result && result.user) {
-                currentUser = result.user;
-                checkProStatus(result.user.email);
-            }
-        }).catch((error) => {
-            if (error.code) console.error("Redirect error:", error);
-        });
+        // Handle redirect result for mobile BEFORE auth state listener
+        if (window.location.hash.includes('state=') || window.location.search.includes('code=')) {
+            firebase.auth().getRedirectResult()
+                .then((result) => {
+                    if (result && result.user) {
+                        currentUser = result.user;
+                        closeAuthModal();
+                        checkProStatus(result.user.email);
+                    }
+                })
+                .catch((error) => {
+                    console.error("Redirect result error:", error);
+                });
+        }
 
         firebase.auth().onAuthStateChanged((user) => {
             const authBtn = document.getElementById('authBtn');
