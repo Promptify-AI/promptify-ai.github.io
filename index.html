@@ -1126,19 +1126,43 @@
 
         function handleGoogleSignIn() {
             const provider = new firebase.auth.GoogleAuthProvider();
-            firebase.auth().signInWithPopup(provider).then((result) => {
-                currentUser = result.user;
-                closeAuthModal();
-                checkProStatus(result.user.email);
-            }).catch((error) => {
-                alert("Sign in failed: " + error.message);
-            });
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+            if (isMobile) {
+                firebase.auth().signInWithRedirect(provider);
+            } else {
+                firebase.auth().signInWithPopup(provider)
+                    .then((result) => {
+                        currentUser = result.user;
+                        closeAuthModal();
+                        checkProStatus(result.user.email);
+                    })
+                    .catch((error) => {
+                        alert("Sign in failed: " + error.message);
+                    });
+            }
         }
+
+        // Handle redirect result after mobile Google sign-in
+        firebase.auth().getRedirectResult()
+            .then((result) => {
+                if (result && result.user) {
+                    currentUser = result.user;
+                    closeAuthModal();
+                    checkProStatus(result.user.email);
+                }
+            })
+            .catch((error) => {
+                if (error.code) {
+                    alert("Sign in failed: " + error.message);
+                }
+            });
 
         firebase.auth().onAuthStateChanged((user) => {
             const authBtn = document.getElementById('authBtn');
             if (user) {
                 currentUser = user;
+                closeAuthModal(); // Always ensure modal is closed when signed in
                 authBtn.innerText = user.displayName || user.email.split('@')[0];
                 checkProStatus(user.email);
             } else {
