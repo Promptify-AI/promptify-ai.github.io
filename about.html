@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About & Guide - PromptifyAI</title>
+    <style>
+        :root {
+            --bg: #09090b;
+            --card: #18181b;
+            --text: #f4f4f5;
+            --muted: #a1a1aa;
+            --accent: #6366f1;
+            --border: #27272a;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+        }
+        nav {
+            border-bottom: 1px solid var(--border);
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .logo { font-weight: 700; font-size: 1.3rem; color: var(--text); text-decoration: none; }
+        .back-btn {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+        }
+        .back-btn:hover { color: var(--text); border-color: var(--accent); }
+        .container {
+            max-width: 800px;
+            margin: 3rem auto;
+            padding: 2rem;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+        h1 { font-size: 2rem; margin-bottom: 1rem; }
+        h2 { font-size: 1.3rem; margin: 1.8rem 0 0.8rem; color: #fff; }
+        p, li { color: var(--muted); margin-bottom: 1rem; }
+        ul { padding-left: 1.5rem; margin-bottom: 1rem; }
+        a { color: var(--accent); text-decoration: none; }
+        .tip-box {
+            background: #09090b;
+            border-left: 4px solid var(--accent);
+            padding: 1rem 1.2rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">PromptifyAI</a>
+        <a href="index.html" class="back-btn">← Back to Home</a>
+    </nav>
+
+    <div class="container">
+        <h1>About PromptifyAI</h1>
+        <p><strong>PromptifyAI</strong> was built for developers, content creators, students, and AI enthusiasts who want to get the best possible output from modern generative AI tools without spending hours tweaking instructions.</p>
+
+        <h2>Our Mission</h2>
+        <p>Most users struggle with AI models like ChatGPT, Claude, Gemini, or Midjourney not because the AI is weak, but because the initial prompt lacks context, constraints, and structure. PromptifyAI bridges that gap by automatically transforming raw, one-line thoughts into structured, production-ready prompts in seconds.</p>
+
+        <h2>Quick Guide: How to Write Better AI Prompts</h2>
+        <p>Even when using PromptifyAI, understanding the core pillars of prompt engineering will help you get 10x better results:</p>
+        <ul>
+            <li><strong>1. Assign a Role:</strong> Always tell the AI who it should act as (e.g., "Act as a senior Python developer" or "Act as a professional UI copywriter").</li>
+            <li><strong>2. Define the Context & Audience:</strong> Specify who the output is for and why you need it.</li>
+            <li><strong>3. Set Clear Constraints:</strong> Mention word counts, coding languages, tone of voice, or things the AI should strictly avoid.</li>
+            <li><strong>4. Specify the Output Format:</strong> Ask for tables, bullet points, pure HTML/CSS code blocks, or step-by-step lists.</li>
+        </ul>
+
+        <div class="tip-box">
+            <strong>Pro Tip for Image Generators (Midjourney & DALL-E):</strong> Include lighting styles (e.g., cinematic lighting, volumetric fog), camera angles, and art mediums in your raw idea so PromptifyAI can expand them accurately!
+        </div>
+
+        <h2>Built by Independent Creators</h2>
+        <p>PromptifyAI is independently developed and maintained by <strong>IamNotWinterYT</strong>. Check out our latest updates and projects on <a href="https://www.youtube.com/@IamNotWinterYT" target="_blank" rel="noopener">YouTube</a> or reach out via our <a href="contact.html">Contact Page</a>.</p>
+    </div>
+
+    <footer>
+        © 2026 PromptifyAI. All rights reserved.
+    </footer>
+
+</body>
+</html>
