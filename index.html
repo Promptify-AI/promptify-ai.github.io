@@ -211,7 +211,6 @@
             background: transparent;
             border: 1px solid var(--border);
             color: var(--text-secondary);
-            margin-left: 15px;
         }
 
         .cta-button.secondary:hover {
@@ -314,6 +313,13 @@
             line-height: 1.7;
         }
 
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            margin: 60px 0;
+        }
+
         /* FAQ */
         .faq-item {
             background: var(--bg-secondary);
@@ -368,7 +374,7 @@
         /* Pricing */
         .pricing-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
             margin: 60px 0;
         }
@@ -565,6 +571,7 @@
             color: var(--text-primary);
             max-height: 400px;
             overflow-y: auto;
+            white-space: pre-wrap;
         }
 
         .copy-btn {
@@ -673,7 +680,7 @@
 
         .footer-content {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 40px;
             margin-bottom: 40px;
         }
@@ -700,6 +707,7 @@
             text-decoration: none;
             font-size: 14px;
             transition: color 0.2s;
+            cursor: pointer;
         }
 
         .footer-section a:hover {
@@ -735,6 +743,7 @@
 
             .landing-hero > div:last-child .cta-button {
                 width: 100%;
+                margin-left: 0;
             }
 
             .pricing-card {
@@ -757,7 +766,7 @@
         <div class="nav-content">
             <div class="logo" onclick="navigateTo('landing')">PromptifyAI</div>
             <ul class="nav-links">
-                <li><a class="nav-link" onclick="navigateTo('landing')">Home</a></li>
+                <li><a class="nav-link active" onclick="navigateTo('landing')">Home</a></li>
                 <li><a class="nav-link" onclick="navigateTo('features')">How It Works</a></li>
                 <li><a class="nav-link" onclick="navigateTo('app')">Try Now</a></li>
                 <li><button class="auth-btn" id="authBtn" onclick="handleAuth()">Sign In</button></li>
@@ -845,18 +854,14 @@
                 The difference between a generic prompt and an optimized one is the difference between good and great AI output.
             </p>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin: 60px 0;">
+            <div class="comparison-grid">
                 <div>
                     <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 15px; color: var(--text-secondary);">Generic Prompt</h3>
-                    <div class="output-box" style="background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3);">
-                        "write a marketing email"
-                    </div>
+                    <div class="output-box" style="background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3);">"write a marketing email"</div>
                 </div>
                 <div>
                     <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 15px; color: var(--success);">Optimized Prompt</h3>
-                    <div class="output-box" style="background: rgba(16, 185, 129, 0.1); border-color: var(--success);">
-                        "Write a professional B2B marketing email for SaaS founders. Target audience: CTOs aged 30-45. Tone: confident but conversational. Include social proof, specific benefits over alternatives, and a clear CTA. Avoid hype. Aim for 200-300 words."
-                    </div>
+                    <div class="output-box" style="background: rgba(16, 185, 129, 0.1); border-color: var(--success);">"Write a professional B2B marketing email for SaaS founders. Target audience: CTOs aged 30-45. Tone: confident but conversational. Include social proof, specific benefits over alternatives, and a clear CTA. Avoid hype. Aim for 200-300 words."</div>
                 </div>
             </div>
 
@@ -887,7 +892,7 @@
                         <li>Priority support</li>
                         <li>Early access to features</li>
                     </ul>
-                    <button class="cta-button" onclick="handleAuth()">Upgrade to Pro</button>
+                    <button class="cta-button" onclick="handleUpgrade()">Upgrade to Pro</button>
                 </div>
             </div>
 
@@ -965,7 +970,7 @@
                     <h2 style="font-size: 28px; font-weight: 700; margin-bottom: 30px;">Optimize Your Prompt</h2>
 
                     <div class="form-group">
-                        <label class="form-label">Target Framework</label>
+                        <label class="form-label" for="targetAI">Target Framework</label>
                         <select id="targetAI">
                             <option value="chatgpt">ChatGPT</option>
                             <option value="claude">Claude</option>
@@ -977,7 +982,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">AI Compute Engine</label>
+                        <label class="form-label" for="aiEngine">AI Compute Engine</label>
                         <select id="aiEngine" onchange="synchronizeUI()">
                             <option value="normal">Standard Engine (Gemini Flash)</option>
                             <option id="proEngineOption" value="pro" disabled>Advanced Engine (Gemini Pro) 🔒</option>
@@ -985,7 +990,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Your Idea or Prompt</label>
+                        <label class="form-label" for="userIdea">Your Idea or Prompt</label>
                         <textarea id="userIdea" placeholder="Describe what you want to create. Be specific about context, tone, or desired output..."></textarea>
                     </div>
 
@@ -1020,7 +1025,7 @@
                 <span>🔵</span> Continue with Google
             </button>
             <p style="font-size: 12px; color: var(--text-tertiary); margin-top: 15px; text-align: center;">
-                By signing in, you agree to our <a href="#" style="color: var(--accent); text-decoration: none;">Privacy Policy</a>
+                By signing in, you agree to our <a href="privacy.html" style="color: var(--accent); text-decoration: none;">Privacy Policy</a> and <a href="terms.html" style="color: var(--accent); text-decoration: none;">Terms of Service</a>.
             </p>
         </div>
     </div>
@@ -1034,28 +1039,28 @@
                     <ul>
                         <li><a onclick="navigateTo('app')">Try Now</a></li>
                         <li><a onclick="navigateTo('features')">How It Works</a></li>
-                        <li><a href="https://www.buymeacoffee.com/shauyabhinq" target="_blank">Upgrade</a></li>
+                        <li><a href="https://www.buymeacoffee.com/shauyabhinq" target="_blank" rel="noopener">Upgrade to Pro</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
                     <h3>Company</h3>
                     <ul>
-                        <li><a href="mailto:officialnotwinter@gmail.com">Contact</a></li>
-                        <li><a href="https://www.youtube.com/@IamNotWinterYT" target="_blank">YouTube</a></li>
-                        <li><a href="#privacy">Privacy Policy</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="https://www.youtube.com/@IamNotWinterYT" target="_blank" rel="noopener">YouTube</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h3>Resources</h3>
+                    <h3>Legal & Guides</h3>
                     <ul>
-                        <li><a href="#">Prompt Tips</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">Documentation</a></li>
+                        <li><a href="about.html">Prompt Guide</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>© 2026 PromptifyAI. Built by <a href="https://www.youtube.com/@IamNotWinterYT" target="_blank" style="color: var(--accent); text-decoration: none;">IamNotWinterYT</a>. All rights reserved.</p>
+                <p>© 2026 PromptifyAI. Built by <a href="https://www.youtube.com/@IamNotWinterYT" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: none;">IamNotWinterYT</a>. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -1075,7 +1080,9 @@
             appId: "1:869858888869:web:6e96bd8c7cf9eac12cfc81"
         };
 
-        firebase.initializeApp(firebaseConfig);
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
 
         // ========== STATE ==========
         let currentUser = null;
@@ -1100,14 +1107,22 @@
             window.scrollTo(0, 0);
         }
 
-        // ========== AUTH ==========
+        // ========== AUTH & UPGRADE ==========
         function handleAuth() {
             if (currentUser) {
-                if (confirm("Sign out?")) {
+                if (confirm("Signed in as " + currentUser.email + ".\nDo you want to sign out?")) {
                     firebase.auth().signOut();
                 }
             } else {
                 openAuthModal();
+            }
+        }
+
+        function handleUpgrade() {
+            if (!currentUser) {
+                openAuthModal();
+            } else {
+                window.open("https://www.buymeacoffee.com/shauyabhinq", "_blank");
             }
         }
 
@@ -1122,35 +1137,11 @@
         function handleGoogleSignIn() {
             const provider = new firebase.auth.GoogleAuthProvider();
             provider.setCustomParameters({
-                'prompt': 'consent'
+                'prompt': 'select_account'
             });
 
-            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-            if (isMobile) {
-                // Use redirect on mobile (more reliable)
-                firebase.auth().signInWithRedirect(provider).catch((error) => {
-                    console.error("Redirect sign in error:", error);
-                    alert("Sign in failed: " + error.message);
-                });
-            } else {
-                // Use popup on desktop
-                firebase.auth().signInWithPopup(provider)
-                    .then((result) => {
-                        currentUser = result.user;
-                        closeAuthModal();
-                        checkProStatus(result.user.email);
-                    })
-                    .catch((error) => {
-                        console.error("Sign in error:", error);
-                        alert("Sign in failed: " + error.message);
-                    });
-            }
-        }
-
-        // Handle redirect result for mobile BEFORE auth state listener
-        if (window.location.hash.includes('state=') || window.location.search.includes('code=')) {
-            firebase.auth().getRedirectResult()
+            // Always try Popup first (works on both Desktop & Mobile Chrome without third-party cookie errors)
+            firebase.auth().signInWithPopup(provider)
                 .then((result) => {
                     if (result && result.user) {
                         currentUser = result.user;
@@ -1159,15 +1150,49 @@
                     }
                 })
                 .catch((error) => {
-                    console.error("Redirect result error:", error);
+                    console.error("Popup sign-in error:", error);
+
+                    // If browser blocks popups, automatically fall back to Redirect
+                    if (error.code === 'auth/popup-blocked' || error.code === 'auth/operation-not-supported-in-this-environment') {
+                        firebase.auth().signInWithRedirect(provider).catch((redirErr) => {
+                            showAuthError(redirErr);
+                        });
+                    } else if (error.code === 'auth/popup-closed-by-user' || error.code === 'auth/cancelled-popup-request') {
+                        // User closed the window manually, no need to spam an alert
+                        return;
+                    } else {
+                        showAuthError(error);
+                    }
                 });
         }
+
+        function showAuthError(error) {
+            if (error.code === 'auth/unauthorized-domain') {
+                alert("Firebase Domain Error: Please add 'promptify-ai.github.io' to Firebase Console -> Authentication -> Settings -> Authorized domains.");
+            } else {
+                alert("Sign in failed (" + error.code + "): " + error.message);
+            }
+        }
+
+        // Always check redirect result on load in case fallback was triggered
+        firebase.auth().getRedirectResult()
+            .then((result) => {
+                if (result && result.user) {
+                    currentUser = result.user;
+                    closeAuthModal();
+                    checkProStatus(result.user.email);
+                }
+            })
+            .catch((error) => {
+                console.error("Redirect result error:", error);
+                showAuthError(error);
+            });
 
         firebase.auth().onAuthStateChanged((user) => {
             const authBtn = document.getElementById('authBtn');
             if (user) {
                 currentUser = user;
-                closeAuthModal(); // Close modal when user logs in
+                closeAuthModal();
                 authBtn.innerText = user.displayName || user.email.split('@')[0];
                 checkProStatus(user.email);
             } else {
@@ -1210,7 +1235,7 @@
 
         // ========== UI SYNC ==========
         function synchronizeUI() {
-            resetUsageOnNewDay(); // Check if day changed and reset if needed
+            resetUsageOnNewDay();
             const normalUses = getMetric('promptify_usage_metric');
             const proUses = getMetric('promptify_pro_model_metric');
             const selectedEngine = document.getElementById('aiEngine').value;
@@ -1240,7 +1265,7 @@
                 proEngineOption.disabled = true;
                 proBadge.style.display = 'inline-block';
                 document.getElementById('aiEngine').value = 'normal';
-                document.getElementById('aiEngine').disabled = false; // Ensure dropdown itself stays enabled
+                document.getElementById('aiEngine').disabled = false;
 
                 usageHint.innerText = `${FREE_DAILY_MAX - normalUses} free daily optimizations remaining`;
                 submitBtn.disabled = (normalUses >= FREE_DAILY_MAX);
@@ -1268,7 +1293,7 @@
 
             if (!userIdea.trim()) return alert('Please enter an idea to optimize');
 
-            // Disable all inputs during optimization
+            // Disable inputs during optimization
             document.getElementById('userIdea').disabled = true;
             document.getElementById('targetAI').disabled = true;
             document.getElementById('aiEngine').disabled = true;
@@ -1304,7 +1329,7 @@
                 document.getElementById('targetAI').disabled = false;
                 document.getElementById('aiEngine').disabled = false;
                 
-                synchronizeUI(); // This will re-disable multiPrompt if free user
+                synchronizeUI();
             }
         }
 
@@ -1342,12 +1367,10 @@
         }
 
         // ========== MODAL CLOSE HANDLERS ==========
-        // Close modal when clicking backdrop
         document.getElementById('authModal').addEventListener('click', function(e) {
             if (e.target === this) closeAuthModal();
         });
 
-        // Close modal with Escape key
         window.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') closeAuthModal();
         });
