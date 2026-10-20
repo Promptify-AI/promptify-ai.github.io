@@ -1070,14 +1070,15 @@
         const FREE_DAILY_MAX = 35;
         const PRO_MODEL_DAILY_MAX = 100;
 
-        // Firebase Config
+        // Updated Firebase Config (promptifyai-4cb2e)
         const firebaseConfig = {
-            apiKey: "AIzaSyDO21pU-G8h3N6zT2GBOsF-bzN_fslYK5o",
-            authDomain: "promptifyai-33f5f.firebaseapp.com",
-            projectId: "promptifyai-33f5f",
-            storageBucket: "promptifyai-33f5f.appspot.com",
-            messagingSenderId: "869858888869",
-            appId: "1:869858888869:web:6e96bd8c7cf9eac12cfc81"
+            apiKey: "AIzaSyAXXOFkdRAs-gz7u93ZXe5IovdwN3pQp3A",
+            authDomain: "promptifyai-4cb2e.firebaseapp.com",
+            projectId: "promptifyai-4cb2e",
+            storageBucket: "promptifyai-4cb2e.firebasestorage.app",
+            messagingSenderId: "654508163764",
+            appId: "1:654508163764:web:ce511cbbbabf94b6350de1",
+            measurementId: "G-YM6JN6S3YR"
         };
 
         if (!firebase.apps.length) {
@@ -1140,7 +1141,7 @@
                 'prompt': 'select_account'
             });
 
-            // Always try Popup first (works on both Desktop & Mobile Chrome without third-party cookie errors)
+            // Always try Popup first (works on both Desktop & Mobile Chrome without third-party cookie loop)
             firebase.auth().signInWithPopup(provider)
                 .then((result) => {
                     if (result && result.user) {
@@ -1152,13 +1153,12 @@
                 .catch((error) => {
                     console.error("Popup sign-in error:", error);
 
-                    // If browser blocks popups, automatically fall back to Redirect
+                    // If browser blocks popups, fall back to Redirect
                     if (error.code === 'auth/popup-blocked' || error.code === 'auth/operation-not-supported-in-this-environment') {
                         firebase.auth().signInWithRedirect(provider).catch((redirErr) => {
                             showAuthError(redirErr);
                         });
                     } else if (error.code === 'auth/popup-closed-by-user' || error.code === 'auth/cancelled-popup-request') {
-                        // User closed the window manually, no need to spam an alert
                         return;
                     } else {
                         showAuthError(error);
@@ -1168,13 +1168,13 @@
 
         function showAuthError(error) {
             if (error.code === 'auth/unauthorized-domain') {
-                alert("Firebase Domain Error: Please add 'promptify-ai.github.io' to Firebase Console -> Authentication -> Settings -> Authorized domains.");
+                alert("Firebase Domain Error: Add 'promptify-ai.github.io' to Firebase Console (promptifyai-4cb2e) -> Authentication -> Settings -> Authorized domains.");
             } else {
                 alert("Sign in failed (" + error.code + "): " + error.message);
             }
         }
 
-        // Always check redirect result on load in case fallback was triggered
+        // Check redirect result on load in case fallback was used
         firebase.auth().getRedirectResult()
             .then((result) => {
                 if (result && result.user) {
