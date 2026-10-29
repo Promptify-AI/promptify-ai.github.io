@@ -1,107 +1,426 @@
+<!-- ==========================================================================
+     FILE 4: privacy.html
+     ========================================================================== -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy Policy - PromptifyAI</title>
+    <title>Privacy Policy — PromptifyAI</title>
+    <meta name="description" content="Privacy Policy for PromptifyAI detailing data minimization practices, Firebase authentication, Google AdSense cookie disclosures, and third-party infrastructure.">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="IamNotWinterYT">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --bg: #09090b;
-            --card: #18181b;
-            --text: #f4f4f5;
-            --muted: #a1a1aa;
-            --accent: #6366f1;
-            --border: #27272a;
+            --bg-primary: #0f1119;
+            --bg-secondary: #15171f;
+            --bg-tertiary: #1a1d28;
+            --text-primary: #e2e8f0;
+            --text-secondary: #8892b0;
+            --text-tertiary: #6b7280;
+            --accent: #3b82f6;
+            --accent-bright: #60a5fa;
+            --border: rgba(59, 130, 246, 0.2);
+
+            --bg-obsidian: #0a0c10;
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --border-rim: rgba(255, 255, 255, 0.18);
+            --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: system-ui, -apple-system, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
+            font-family: var(--font-sans);
+            background-color: var(--bg-primary);
+            background-image:
+                radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.09) 0%, transparent 60%),
+                linear-gradient(to bottom, var(--bg-obsidian), var(--bg-primary));
+            color: var(--text-primary);
             line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
-        nav {
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 48px 48px;
+            mask-image: radial-gradient(ellipse at 50% 20%, black 20%, transparent 80%);
+            -webkit-mask-image: radial-gradient(ellipse at 50% 20%, black 20%, transparent 80%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 17, 25, 0.82);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
-            padding: 1.2rem 2rem;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 14px 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 1000px;
-            margin: 0 auto;
         }
-        .logo { font-weight: 700; font-size: 1.3rem; color: var(--text); text-decoration: none; }
-        .back-btn {
-            color: var(--muted);
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 17px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
             text-decoration: none;
-            font-size: 0.95rem;
-            padding: 0.5rem 1rem;
+            transition: color 0.2s ease;
+        }
+
+        .logo:hover {
+            color: var(--accent-bright);
+        }
+
+        .logo-mark {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(99, 102, 241, 0.25));
             border: 1px solid var(--border);
+            color: var(--accent-bright);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-top: 1px solid var(--border-rim);
+            transition: all 0.22s ease;
+        }
+
+        .back-link:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--accent-bright);
+            color: var(--accent-bright);
+            transform: translateX(-2px);
+        }
+
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 4.5rem 1.5rem 5rem;
+        }
+
+        .page-hero {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--accent-bright);
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid var(--border);
+            padding: 5px 12px;
+            border-radius: 999px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 4.5vw, 2.85rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            margin-bottom: 12px;
+            background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-lead {
+            font-size: 0.98rem;
+            color: var(--text-secondary);
+        }
+
+        .content-card {
+            background: var(--bg-secondary);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-top: 1px solid var(--border-rim);
+            border-radius: 0.75rem;
+            padding: 2rem 2.25rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
+        }
+
+        h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sec-num {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--accent-bright);
+            background: rgba(59, 130, 246, 0.12);
+            border: 1px solid var(--border);
+            padding: 2px 8px;
             border-radius: 6px;
         }
-        .back-btn:hover { color: var(--text); border-color: var(--accent); }
-        .container {
-            max-width: 800px;
-            margin: 3rem auto;
-            padding: 2rem;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
+
+        p {
+            color: var(--text-secondary);
+            font-size: 0.96rem;
+            margin-bottom: 1rem;
         }
-        h1 { font-size: 2rem; margin-bottom: 0.5rem; }
-        .date { color: var(--muted); font-size: 0.9rem; margin-bottom: 2rem; display: block; }
-        h2 { font-size: 1.3rem; margin: 1.8rem 0 0.8rem; color: #fff; }
-        p, li { color: var(--muted); margin-bottom: 1rem; }
-        ul { padding-left: 1.5rem; margin-bottom: 1rem; }
-        a { color: var(--accent); text-decoration: none; }
-        footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.9rem; }
+
+        p:last-child {
+            margin-bottom: 0;
+        }
+
+        strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .adsense-callout {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent);
+            border-radius: 0.6rem;
+            padding: 1.25rem 1.4rem;
+            margin: 1rem 0;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        ul {
+            list-style: none;
+            margin: 0.75rem 0 1rem;
+            padding-left: 0;
+        }
+
+        ul li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.7rem;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        ul li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--accent-bright);
+            font-family: var(--font-mono);
+        }
+
+        a {
+            color: var(--accent-bright);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            padding: 2.5rem 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .footer-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            font-size: 0.875rem;
+            color: var(--text-tertiary);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.25rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-bright);
+        }
+
+        @media (max-width: 640px) {
+            main {
+                padding: 3rem 1rem 3.5rem;
+            }
+            .content-card {
+                padding: 1.5rem;
+            }
+            .footer-inner {
+                flex-direction: column;
+                text-align: center;
+            }
+            .footer-links {
+                justify-content: center;
+            }
+        }
     </style>
 </head>
 <body>
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <span class="logo-mark">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="4 17 10 11 4 5"></polyline>
+                        <line x1="12" y1="19" x2="20" y2="19"></line>
+                    </svg>
+                </span>
+                PromptifyAI
+            </a>
+            <a href="index.html" class="back-link">← Back to App</a>
+        </div>
+    </header>
 
-    <nav>
-        <a href="index.html" class="logo">PromptifyAI</a>
-        <a href="index.html" class="back-btn">← Back to Home</a>
-    </nav>
+    <main>
+        <div class="page-hero">
+            <span class="eyebrow">// Data Protection &amp; Transparency</span>
+            <h1>Privacy Policy</h1>
+            <p class="hero-lead">Effective Date: January 1, 2026 &bull; Last Updated: October 2026</p>
+        </div>
 
-    <div class="container">
-        <h1>Privacy Policy</h1>
-        <span class="date">Last Updated: October 2026</span>
+        <section class="content-card">
+            <h2><span class="sec-num">01</span> Introduction &amp; Data Minimization Statement</h2>
+            <p>
+                At PromptifyAI (accessible from <strong>https://promptify-ai.github.io/</strong>), protecting your privacy is a foundational engineering principle. We adhere strictly to <strong>data minimization</strong>: we collect, process, and retain only the bare minimum information required to authenticate your session, enforce fair-use compute quotas, and compile your prompts. We never sell, rent, or trade your personal information to data brokers or third parties.
+            </p>
+        </section>
 
-        <p>Welcome to <strong>PromptifyAI</strong> (<a href="https://promptify-ai.github.io/">https://promptify-ai.github.io/</a>). Your privacy is critically important to us. This Privacy Policy explains how we collect, use, and protect your information when you use our web application.</p>
+        <section class="content-card">
+            <h2><span class="sec-num">02</span> Information We Process</h2>
+            <p>
+                Depending on how you interact with PromptifyAI, we process the following limited categories of data:
+            </p>
+            <ul>
+                <li>
+                    <strong>Prompt Inputs:</strong> When you click "Optimize Prompt," your raw text input and selected target framework are transmitted securely via HTTPS to our serverless backend and processed transiently by AI APIs to return your optimized prompt. <strong>Your prompt inputs are not stored indefinitely by PromptifyAI in any persistent database.</strong>
+                </li>
+                <li>
+                    <strong>Firebase Google Auth Profile Information:</strong> If you choose to sign in using Google Authentication, Firebase accesses basic profile metadata provided by your Google account—specifically your <strong>email address and display name</strong>—solely to authenticate your session and verify your Pro Supporter tier status.
+                </li>
+                <li>
+                    <strong>Local Browser Usage Storage:</strong> PromptifyAI uses your browser's native <code>LocalStorage</code> and <code>SessionStorage</code> (such as <code>promptify_date</code>, <code>promptify_usage_metric</code>, and <code>promptify_pro_model_metric</code>) to track daily free and Pro execution counts locally, remember UI preferences, and maintain active authentication state across page reloads.
+                </li>
+            </ul>
+        </section>
 
-        <h2>1. Information We Collect</h2>
-        <ul>
-            <li><strong>Account Information:</strong> When you sign in using Google Authentication (via Firebase), we collect your basic Google profile details including your name, email address, and profile picture strictly for account management, syncing saved prompts, and tracking daily usage limits.</li>
-            <li><strong>Prompt Inputs:</strong> The raw ideas and text inputs you submit are processed via AI APIs (such as Google Gemini) to generate optimized prompts.</li>
-            <li><strong>Log Data:</strong> Like most websites, standard non-identifying browser metadata (browser type, referring pages, timestamps) may be logged automatically by our hosting provider (GitHub Pages).</li>
-        </ul>
+        <section class="content-card">
+            <h2><span class="sec-num">03</span> Google AdSense &amp; Cookies Disclosure</h2>
+            <div class="adsense-callout">
+                "Third party vendors, including Google, use cookies to serve ads based on a user's prior visits to your website or other websites."
+            </div>
+            <p>
+                Google's use of advertising cookies enables it and its partners to serve advertisements to our users based on their visit to PromptifyAI and/or other sites on the Internet.
+            </p>
+            <p>
+                Users may opt out of personalized advertising at any time by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener"><strong>Google Ads Settings (https://www.google.com/settings/ads)</strong></a>. Alternatively, you can opt out of a third-party vendor's use of cookies for personalized advertising by visiting the Digital Advertising Alliance consumer choice portal at <a href="http://www.aboutads.info/" target="_blank" rel="noopener"><strong>http://www.aboutads.info/</strong></a>.
+            </p>
+        </section>
 
-        <h2>2. Cookies and Google AdSense</h2>
-        <p>We use cookies and local storage to maintain your login session and preferences. Additionally, we may use third-party advertising companies, such as <strong>Google AdSense</strong>, to serve ads when you visit our website.</p>
-        <ul>
-            <li>Google, as a third-party vendor, uses cookies to serve ads on PromptifyAI based on a user's prior visits to our website or other websites on the internet.</li>
-            <li>Google's use of advertising cookies (including the DoubleClick DART cookie) enables it and its partners to serve personalized ads to our users.</li>
-            <li>Users may opt out of personalized advertising by visiting <a href="https://myadcenter.google.com/" target="_blank" rel="noopener">Google Ads Settings</a>.</li>
-        </ul>
+        <section class="content-card">
+            <h2><span class="sec-num">04</span> Third-Party Infrastructure Disclosures</h2>
+            <p>
+                To operate reliably at scale, PromptifyAI relies on the following industry-standard third-party infrastructure providers, each governed by their respective security and privacy policies:
+            </p>
+            <ul>
+                <li><strong>Google Firebase:</strong> Used for secure Google OAuth 2.0 user authentication and session management.</li>
+                <li><strong>GitHub Pages &amp; Vercel:</strong> Used for static frontend web hosting and serverless API routing.</li>
+                <li><strong>Google Gemini API:</strong> Used as the underlying foundation model compute engine for processing and optimizing user prompts.</li>
+                <li><strong>Google AdSense:</strong> Used to display non-intrusive advertisements that help fund free daily compute quotas for the community.</li>
+            </ul>
+        </section>
 
-        <h2>3. How We Use Your Data</h2>
-        <p>We never sell, rent, or trade your personal information to third parties. Your data is used exclusively to:</p>
-        <ul>
-            <li>Provide and operate the PromptifyAI optimization engine.</li>
-            <li>Track your daily free tier usage or Pro account status.</li>
-            <li>Improve site performance and user experience.</li>
-        </ul>
-
-        <h2>4. Data Security</h2>
-        <p>Account authentication and database management are handled securely via Google Firebase encryption standards. However, please avoid entering sensitive personal, financial, or confidential passwords into the prompt input box.</p>
-
-        <h2>5. Contact Us</h2>
-        <p>If you have any questions about this Privacy Policy or wish to request account data deletion, please contact us at: <a href="mailto:officialnotwinter@gmail.com">officialnotwinter@gmail.com</a>.</p>
-    </div>
+        <section class="content-card">
+            <h2><span class="sec-num">05</span> Data Security, Children's Privacy &amp; Contact Information</h2>
+            <p>
+                <strong>Data Security:</strong> All data transmitted between your browser, our authentication providers, and our optimization endpoints is encrypted in transit using industry-standard TLS/HTTPS protocols.
+            </p>
+            <p>
+                <strong>Children's Privacy:</strong> PromptifyAI is not directed at children under the age of 13, and we do not knowingly collect personally identifiable information from anyone under 13. If you are a parent or guardian and believe that your child has provided personal information to us, please contact us immediately so we can purge such records.
+            </p>
+            <p>
+                <strong>Privacy Inquiries:</strong> If you have questions about this Privacy Policy, wish to request deletion of your authentication record, or have data protection inquiries, contact us directly at: <a href="mailto:officialnotwinter@gmail.com"><strong>officialnotwinter@gmail.com</strong></a>.
+            </p>
+        </section>
+    </main>
 
     <footer>
-        © 2026 PromptifyAI. All rights reserved.
+        <div class="footer-inner">
+            <p>© 2026 PromptifyAI. Built by IamNotWinterYT. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="index.html">App</a>
+                <a href="about.html">About &amp; Guide</a>
+                <a href="contact.html">Contact</a>
+                <a href="terms.html">Terms of Service</a>
+                <a href="privacy.html">Privacy Policy</a>
+            </div>
+        </div>
     </footer>
-
 </body>
 </html>
