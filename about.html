@@ -1,101 +1,618 @@
+<!-- ==========================================================================
+     FILE 1: about.html
+     ========================================================================== -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About & Guide - PromptifyAI</title>
+    <title>About &amp; Prompt Engineering Guide — PromptifyAI</title>
+    <meta name="description" content="Learn the 4 Pillars of Professional Prompt Engineering, model-specific prompting formulas for ChatGPT, Claude, Gemini, and Midjourney, and the mission behind PromptifyAI.">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="IamNotWinterYT">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --bg: #09090b;
-            --card: #18181b;
-            --text: #f4f4f5;
-            --muted: #a1a1aa;
-            --accent: #6366f1;
-            --border: #27272a;
+            --bg-primary: #0f1119;
+            --bg-secondary: #15171f;
+            --bg-tertiary: #1a1d28;
+            --text-primary: #e2e8f0;
+            --text-secondary: #8892b0;
+            --text-tertiary: #6b7280;
+            --accent: #3b82f6;
+            --accent-bright: #60a5fa;
+            --border: rgba(59, 130, 246, 0.2);
+
+            --bg-obsidian: #0a0c10;
+            --bg-glass: rgba(21, 23, 31, 0.72);
+            --bg-terminal: #080a0e;
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --border-rim: rgba(255, 255, 255, 0.18);
+            --success: #10b981;
+            --danger: #ef4444;
+            --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: system-ui, -apple-system, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
+            font-family: var(--font-sans);
+            background-color: var(--bg-primary);
+            background-image:
+                radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.09) 0%, transparent 60%),
+                linear-gradient(to bottom, var(--bg-obsidian), var(--bg-primary));
+            color: var(--text-primary);
             line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
-        nav {
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 48px 48px;
+            mask-image: radial-gradient(ellipse at 50% 20%, black 20%, transparent 80%);
+            -webkit-mask-image: radial-gradient(ellipse at 50% 20%, black 20%, transparent 80%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 17, 25, 0.82);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
-            padding: 1.2rem 2rem;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 14px 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 1000px;
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 17px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .logo:hover {
+            color: var(--accent-bright);
+        }
+
+        .logo-mark {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(99, 102, 241, 0.25));
+            border: 1px solid var(--border);
+            color: var(--accent-bright);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-top: 1px solid var(--border-rim);
+            transition: all 0.22s ease;
+        }
+
+        .back-link:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--accent-bright);
+            color: var(--accent-bright);
+            transform: translateX(-2px);
+        }
+
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 4.5rem 1.5rem 5rem;
+        }
+
+        .page-hero {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--accent-bright);
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid var(--border);
+            padding: 5px 12px;
+            border-radius: 999px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 4.5vw, 3rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            margin-bottom: 16px;
+            background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-lead {
+            font-size: 1.08rem;
+            color: var(--text-secondary);
+            max-width: 700px;
             margin: 0 auto;
         }
-        .logo { font-weight: 700; font-size: 1.3rem; color: var(--text); text-decoration: none; }
-        .back-btn {
-            color: var(--muted);
-            text-decoration: none;
-            font-size: 0.95rem;
-            padding: 0.5rem 1rem;
+
+        .content-card {
+            background: var(--bg-secondary);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border: 1px solid var(--border);
-            border-radius: 6px;
+            border-top: 1px solid var(--border-rim);
+            border-radius: 0.75rem;
+            padding: 2.25rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
+            transition: border-color 0.25s ease, transform 0.25s ease;
         }
-        .back-btn:hover { color: var(--text); border-color: var(--accent); }
-        .container {
-            max-width: 800px;
-            margin: 3rem auto;
-            padding: 2rem;
-            background: var(--card);
+
+        .content-card:hover {
+            border-color: rgba(96, 165, 250, 0.35);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 1.25rem;
+        }
+
+        .icon-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(59, 130, 246, 0.14);
             border: 1px solid var(--border);
-            border-radius: 12px;
+            color: var(--accent-bright);
+            flex-shrink: 0;
         }
-        h1 { font-size: 2rem; margin-bottom: 1rem; }
-        h2 { font-size: 1.3rem; margin: 1.8rem 0 0.8rem; color: #fff; }
-        p, li { color: var(--muted); margin-bottom: 1rem; }
-        ul { padding-left: 1.5rem; margin-bottom: 1rem; }
-        a { color: var(--accent); text-decoration: none; }
-        .tip-box {
-            background: #09090b;
-            border-left: 4px solid var(--accent);
-            padding: 1rem 1.2rem;
-            margin: 1rem 0;
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+        }
+
+        h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--accent-bright);
+            margin-top: 1.5rem;
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 1.1rem;
+            font-size: 0.98rem;
+        }
+
+        p:last-child {
+            margin-bottom: 0;
+        }
+
+        strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .pillar-grid,
+        .formula-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+            margin-top: 1.25rem;
+        }
+
+        .sub-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-glass);
+            border-left: 3px solid var(--accent);
+            border-radius: 0.6rem;
+            padding: 1.35rem 1.5rem;
+        }
+
+        .sub-card h3 {
+            margin-top: 0;
+        }
+
+        pre {
+            background: var(--bg-terminal);
+            border: 1px solid var(--border);
+            border-radius: 0.6rem;
+            padding: 1.15rem 1.25rem;
+            overflow-x: auto;
+            margin: 0.85rem 0 1.2rem;
+        }
+
+        code {
+            font-family: var(--font-mono);
+            font-size: 0.86rem;
+            line-height: 1.65;
+            color: var(--text-primary);
+        }
+
+        p code, li code {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            padding: 2px 6px;
             border-radius: 4px;
+            font-size: 0.84rem;
+            color: var(--accent-bright);
         }
-        footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.9rem; }
+
+        .comparison-pair {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-glass);
+            border-radius: 0.65rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .badge-before,
+        .badge-after {
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 3px 10px;
+            border-radius: 999px;
+            margin-bottom: 0.4rem;
+        }
+
+        .badge-before {
+            background: rgba(239, 68, 68, 0.12);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .badge-after {
+            background: rgba(16, 185, 129, 0.12);
+            color: #6ee7b7;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .analysis-note {
+            background: rgba(59, 130, 246, 0.07);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 1rem 1.2rem;
+            margin-top: 0.75rem;
+            font-size: 0.92rem;
+            color: var(--text-secondary);
+        }
+
+        footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            padding: 2.5rem 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .footer-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            font-size: 0.875rem;
+            color: var(--text-tertiary);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.25rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-bright);
+        }
+
+        @media (max-width: 640px) {
+            main {
+                padding: 3rem 1rem 3.5rem;
+            }
+            .content-card {
+                padding: 1.5rem;
+            }
+            .footer-inner {
+                flex-direction: column;
+                text-align: center;
+            }
+            .footer-links {
+                justify-content: center;
+            }
+        }
     </style>
 </head>
 <body>
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <span class="logo-mark">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="4 17 10 11 4 5"></polyline>
+                        <line x1="12" y1="19" x2="20" y2="19"></line>
+                    </svg>
+                </span>
+                PromptifyAI
+            </a>
+            <a href="index.html" class="back-link">← Back to App</a>
+        </div>
+    </header>
 
-    <nav>
-        <a href="index.html" class="logo">PromptifyAI</a>
-        <a href="index.html" class="back-btn">← Back to Home</a>
-    </nav>
-
-    <div class="container">
-        <h1>About PromptifyAI</h1>
-        <p><strong>PromptifyAI</strong> was built for developers, content creators, students, and AI enthusiasts who want to get the best possible output from modern generative AI tools without spending hours tweaking instructions.</p>
-
-        <h2>Our Mission</h2>
-        <p>Most users struggle with AI models like ChatGPT, Claude, Gemini, or Midjourney not because the AI is weak, but because the initial prompt lacks context, constraints, and structure. PromptifyAI bridges that gap by automatically transforming raw, one-line thoughts into structured, production-ready prompts in seconds.</p>
-
-        <h2>Quick Guide: How to Write Better AI Prompts</h2>
-        <p>Even when using PromptifyAI, understanding the core pillars of prompt engineering will help you get 10x better results:</p>
-        <ul>
-            <li><strong>1. Assign a Role:</strong> Always tell the AI who it should act as (e.g., "Act as a senior Python developer" or "Act as a professional UI copywriter").</li>
-            <li><strong>2. Define the Context & Audience:</strong> Specify who the output is for and why you need it.</li>
-            <li><strong>3. Set Clear Constraints:</strong> Mention word counts, coding languages, tone of voice, or things the AI should strictly avoid.</li>
-            <li><strong>4. Specify the Output Format:</strong> Ask for tables, bullet points, pure HTML/CSS code blocks, or step-by-step lists.</li>
-        </ul>
-
-        <div class="tip-box">
-            <strong>Pro Tip for Image Generators (Midjourney & DALL-E):</strong> Include lighting styles (e.g., cinematic lighting, volumetric fog), camera angles, and art mediums in your raw idea so PromptifyAI can expand them accurately!
+    <main>
+        <div class="page-hero">
+            <span class="eyebrow">// Documentation &amp; Editorial Guide</span>
+            <h1>The Architecture of Prompt Engineering</h1>
+            <p class="hero-lead">
+                Our mission to democratize deterministic AI interaction, complete with our comprehensive reference manual for engineering production-grade prompts across modern foundation models.
+            </p>
         </div>
 
-        <h2>Built by Independent Creators</h2>
-        <p>PromptifyAI is independently developed and maintained by <strong>IamNotWinterYT</strong>. Check out our latest updates and projects on <a href="https://www.youtube.com/@IamNotWinterYT" target="_blank" rel="noopener">YouTube</a> or reach out via our <a href="contact.html">Contact Page</a>.</p>
-    </div>
+        <!-- SECTION 1: MISSION & DEVELOPER BIO -->
+        <article class="content-card">
+            <div class="card-header">
+                <span class="icon-badge">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
+                </span>
+                <h2>1. The PromptifyAI Mission &amp; Developer Bio</h2>
+            </div>
+            <p>
+                Large Language Models (LLMs) and latent diffusion systems represent a fundamental shift in software engineering, research, and digital creation. Yet a persistent usability gap remains between the raw reasoning capacity of models like ChatGPT, Claude, Gemini, and Midjourney and the results everyday users actually receive. The culprit is rarely model capability—it is instruction ambiguity. When a user feeds a vague, one-sentence request into a transformer model, the model is forced to guess the desired persona, technical depth, audience, formatting structure, and edge-case boundaries. It defaults to the statistical average of its training distribution, producing generic, surface-level prose.
+            </p>
+            <p>
+                <strong>PromptifyAI was built with a singular mission: to democratize advanced prompt engineering.</strong> We believe that you should not need to memorize hundreds of syntactic tokens, XML schema conventions, or camera rendering parameters just to extract reliable, deterministic outputs from artificial intelligence. By acting as an intelligent compilation layer between human intent and foundation model execution, PromptifyAI transforms rough, unstructured thoughts into rigorous, role-anchored specifications in seconds.
+            </p>
+            <p>
+                PromptifyAI is independently engineered and maintained by <strong>IamNotWinterYT</strong>, a developer and content creator passionate about building fast, accessible, zero-bloat tools for software developers, digital creators, and students. Frustrated by bloated enterprise wrappers and paywalled prompt libraries, <code>IamNotWinterYT</code> designed PromptifyAI as a lightweight, developer-first IDE playground that anyone can use immediately—offering generous daily free compute alongside deep educational resources that empower users to understand <em>why</em> structured prompts work.
+            </p>
+        </article>
+
+        <!-- SECTION 2: THE 4 PILLARS OF PROFESSIONAL PROMPT ENGINEERING -->
+        <article class="content-card">
+            <div class="card-header">
+                <span class="icon-badge">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                    </svg>
+                </span>
+                <h2>2. The 4 Pillars of Professional Prompt Engineering</h2>
+            </div>
+            <p>
+                Whether you are automating backend code reviews, synthesizing academic literature, or drafting product copy, every production-grade prompt relies on four foundational pillars. Omitting even one of these pillars introduces entropy into the model's probability distribution.
+            </p>
+
+            <div class="pillar-grid">
+                <div class="sub-card">
+                    <h3>Pillar I: Role &amp; Persona Assignment</h3>
+                    <p>
+                        Assigning an explicit identity or domain expertise to the AI narrows its latent space to high-authority vocabulary, mental models, and analytical frameworks. Instead of asking a model to "check my SQL query," anchoring the model as a <em>"Staff Database Reliability Engineer specializing in PostgreSQL 16 query planner optimization and high-concurrency indexing"</em> immediately shifts the tone, rigor, and diagnostic depth of the response. A strong persona defines both <strong>who the model is</strong> and <strong>how it evaluates quality</strong>.
+                    </p>
+                </div>
+
+                <div class="sub-card">
+                    <h3>Pillar II: Task Definition &amp; Situational Context</h3>
+                    <p>
+                        Models cannot read your mind or infer unstated business logic. A high-precision prompt separates the immediate <strong>Task</strong> (the exact action verb to execute) from the <strong>Context</strong> (who the target audience is, what system constraints exist, and what success looks like). For example, specifying that a technical tutorial is intended for <em>"first-year computer science students who understand basic Python loops but have never used asynchronous I/O"</em> calibrates the abstraction level far better than asking to "explain async Python simply."
+                    </p>
+                </div>
+
+                <div class="sub-card">
+                    <h3>Pillar III: Negative Constraints &amp; Guardrails</h3>
+                    <p>
+                        Telling an AI what <strong>not</strong> to do is often more powerful than telling it what to do. Foundation models are trained via Reinforcement Learning from Human Feedback (RLHF) to be polite, verbose, and hedging—which often leads to repetitive introductions, generic disclaimers, and florid buzzwords. Explicit negative constraints prune these undesirable pathways: <em>"Do not include introductory meta-commentary; do not use marketing clichés like 'delve', 'tapestry', or 'game-changing'; do not use external libraries outside the Python standard library."</em>
+                    </p>
+                </div>
+
+                <div class="sub-card">
+                    <h3>Pillar IV: Output Architecture &amp; Schema</h3>
+                    <p>
+                        Unconstrained text generation is difficult to parse, read, or pipe into downstream software. Professional prompt engineers strictly define the structural container of the output. Whether you require a valid <code>JSON</code> payload adhering to a strict TypeScript interface, a Markdown comparison table with four specific columns, or a three-stage executive brief capped at 250 words, defining the output architecture guarantees predictable, repeatable formatting on the first pass.
+                    </p>
+                </div>
+            </div>
+        </article>
+
+        <!-- SECTION 3: MODEL-SPECIFIC PROMPTING FORMULAS -->
+        <article class="content-card">
+            <div class="card-header">
+                <span class="icon-badge">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="16 18 22 12 16 6"></polyline>
+                        <polyline points="8 6 2 12 8 18"></polyline>
+                    </svg>
+                </span>
+                <h2>3. Model-Specific Prompting Formulas</h2>
+            </div>
+            <p>
+                Different AI architectures are fine-tuned on distinct instruction datasets and formatting conventions. PromptifyAI tailors its compilation engine to match the native strengths of your selected target platform:
+            </p>
+
+            <div class="formula-grid">
+                <div class="sub-card">
+                    <h3>ChatGPT / OpenAI Models</h3>
+                    <p>
+                        OpenAI's GPT family responds exceptionally well to hierarchical <strong>Markdown structuring</strong> (`# Role`, `## Objective`, `## Constraints`, `## Output Format`) combined with system-level behavioral rules. For complex classification or stylistic emulation, incorporating <strong>few-shot learning</strong> (providing 2 to 3 concrete input-output pairs inside the prompt) dramatically outperforms zero-shot instructions. Additionally, instructing ChatGPT to perform an internal critique step before outputting its final answer minimizes hallucinations during code generation.
+                    </p>
+                </div>
+
+                <div class="sub-card">
+                    <h3>Google Gemini</h3>
+                    <p>
+                        Google Gemini excels at long-context synthesis, multimodal reasoning across code, text, and structured data, and high-speed information extraction. When prompting Gemini, explicitly request <strong>step-by-step analytical decomposition</strong> before synthesis. Gemini is particularly responsive when asked to normalize messy unstructured text into clean <strong>Markdown tables or strict JSON schemas</strong>, provided you supply explicit column headers, data types, and fallback rules for missing fields.
+                    </p>
+                </div>
+
+                <div class="sub-card">
+                    <h3>Anthropic Claude</h3>
+                    <p>
+                        Anthropic's Claude models are specifically trained to parse and respect <strong>XML tag delimiters</strong>. Wrapping distinct sections of your prompt in semantic tags such as <code>&lt;context&gt;</code>, <code>&lt;rules&gt;</code>, <code>&lt;example&gt;</code>, <code>&lt;thought&gt;</code>, and <code>&lt;response&gt;</code> eliminates boundary confusion between your instructions and the source data being analyzed. Furthermore, instructing Claude to reason through edge cases inside a <code>&lt;thought&gt;</code> block prior to writing its final <code>&lt;response&gt;</code> yields markedly superior logic on complex engineering tasks.
+                    </p>
+                </div>
+
+                <div class="sub-card">
+                    <h3>Midjourney &amp; Diffusion Models</h3>
+                    <p>
+                        Unlike conversational LLMs, diffusion models do not benefit from conversational grammar or polite requests ("please draw me a..."). Instead, they rely on <strong>visual token stacking</strong> ordered by weight and importance:
+                        <strong>[1. Core Subject &amp; Anatomy] + [2. Dynamic Action / Pose] + [3. Environment &amp; Atmosphere] + [4. Lighting Architecture] + [5. Camera &amp; Lens Specifications (e.g., 85mm f/1.4, Kodak Portra 400)] + [6. Artistic Medium / Style] + [7. Rendering Engine (e.g., Unreal Engine 5, Octane Render, ray tracing)] + [8. Parameters (e.g., <code>--ar 16:9 --v 6.1 --stylize 250</code>)]</strong>.
+                    </p>
+                </div>
+            </div>
+        </article>
+
+        <!-- SECTION 4: PRACTICAL BEFORE & AFTER PROMPT EXAMPLES -->
+        <article class="content-card">
+            <div class="card-header">
+                <span class="icon-badge">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </span>
+                <h2>4. Practical Before &amp; After Prompt Examples</h2>
+            </div>
+            <p>
+                Examine how raw user ideas are compiled into deterministic, high-yield prompts using the four pillars and model-specific syntax:
+            </p>
+
+            <!-- Example Pair 1 -->
+            <div class="comparison-pair">
+                <h3 style="margin-top: 0;">Case Study A: Backend API Code &amp; Security Review (Anthropic Claude)</h3>
+                <span class="badge-before">Before — Raw User Prompt</span>
+                <pre><code>Review my Node.js Express login route and make it more secure.</code></pre>
+
+                <span class="badge-after">After — PromptifyAI Compiled Prompt</span>
+                <pre><code>&lt;role&gt;
+You are a Principal Application Security Engineer specializing in Node.js, Express, and OWASP Top 10 authentication vulnerabilities.
+&lt;/role&gt;
+
+&lt;context&gt;
+We are auditing a production Express.js authentication endpoint that handles email/password login and issues JWT access tokens.
+&lt;/context&gt;
+
+&lt;rules&gt;
+1. Analyze the provided route handler for timing attacks, SQL/NoSQL injection vectors, insecure JWT signing practices, and missing rate-limiting.
+2. Do not rewrite the entire application architecture; keep recommendations compatible with Express 4.x middleware.
+3. Do not include generic security definitions—focus strictly on actionable code fixes.
+&lt;/rules&gt;
+
+&lt;output_format&gt;
+First, outline vulnerabilities inside a &lt;thought&gt; block.
+Second, provide a Markdown table ranking each issue by Severity (Critical/High/Medium), Attack Vector, and Remediation.
+Third, output the refactored, production-hardened Express route code inside a single TypeScript code block.
+&lt;/output_format&gt;</code></pre>
+                <div class="analysis-note">
+                    <strong>Why the Optimized Prompt Wins:</strong> By wrapping sections in Claude-native XML tags (<code>&lt;role&gt;</code>, <code>&lt;rules&gt;</code>, <code>&lt;output_format&gt;</code>), anchoring the persona to OWASP authentication standards, and demanding a structured severity table followed by drop-in TypeScript code, the model skips generic textbook advice and delivers an actionable security audit.
+                </div>
+            </div>
+
+            <!-- Example Pair 2 -->
+            <div class="comparison-pair">
+                <h3 style="margin-top: 0;">Case Study B: Cinematic Concept Art Generation (Midjourney v6)</h3>
+                <span class="badge-before">Before — Raw User Prompt</span>
+                <pre><code>A cool cyberpunk samurai standing in a rainy neon street at night, realistic 4k</code></pre>
+
+                <span class="badge-after">After — PromptifyAI Compiled Prompt</span>
+                <pre><code> battle-worn Ronin cyber-samurai with carbon-fiber tactical armor and glowing optical visor, standing poised with a katana unsheathed, rain-slicked Neo-Tokyo alleyway at midnight surrounded by holographic kanji signage and rising steam vents, volumetric cyan and magenta neon rim lighting reflecting on wet asphalt, shot on ARRI Alexa 65 with Panavision Primo 50mm anamorphic lens at f/1.8, shallow depth of field, cinematic cyberpunk realism, Octane Render, ray-traced reflections, 8k ultra-detailed textures --ar 16:9 --v 6.1 --style raw --s 250</code></pre>
+                <div class="analysis-note">
+                    <strong>Why the Optimized Prompt Wins:</strong> Rather than relying on vague adjectives like "cool" or "realistic," the compiled prompt stacks concrete visual descriptors—specifying material textures (carbon-fiber, wet asphalt), lighting geometry (volumetric cyan/magenta rim lighting), real-world cinema optics (ARRI Alexa 65, 50mm anamorphic f/1.8), and native Midjourney aspect ratio and raw styling parameters (<code>--ar 16:9 --v 6.1 --style raw</code>).
+                </div>
+            </div>
+        </article>
+    </main>
 
     <footer>
-        © 2026 PromptifyAI. All rights reserved.
+        <div class="footer-inner">
+            <p>© 2026 PromptifyAI. Built by IamNotWinterYT. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="index.html">App</a>
+                <a href="about.html">About &amp; Guide</a>
+                <a href="contact.html">Contact</a>
+                <a href="terms.html">Terms of Service</a>
+                <a href="privacy.html">Privacy Policy</a>
+            </div>
+        </div>
     </footer>
-
 </body>
 </html>
