@@ -1,134 +1,567 @@
+<!-- ==========================================================================
+     FILE 2: contact.html
+     ========================================================================== -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us - PromptifyAI</title>
+    <title>Contact Us — PromptifyAI</title>
+    <meta name="description" content="Get in touch with PromptifyAI for bug reports, feature requests, business inquiries, or general support.">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="IamNotWinterYT">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --bg: #09090b;
-            --card: #18181b;
-            --text: #f4f4f5;
-            --muted: #a1a1aa;
-            --accent: #6366f1;
-            --border: #27272a;
+            --bg-primary: #0f1119;
+            --bg-secondary: #15171f;
+            --bg-tertiary: #1a1d28;
+            --text-primary: #e2e8f0;
+            --text-secondary: #8892b0;
+            --text-tertiary: #6b7280;
+            --accent: #3b82f6;
+            --accent-bright: #60a5fa;
+            --border: rgba(59, 130, 246, 0.2);
+
+            --bg-obsidian: #0a0c10;
+            --bg-terminal: #080a0e;
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --border-rim: rgba(255, 255, 255, 0.18);
+            --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: system-ui, -apple-system, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            line-height: 1.7;
+            font-family: var(--font-sans);
+            background-color: var(--bg-primary);
+            background-image:
+                radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.09) 0%, transparent 60%),
+                linear-gradient(to bottom, var(--bg-obsidian), var(--bg-primary));
+            color: var(--text-primary);
+            line-height: 1.65;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
-        nav {
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 48px 48px;
+            mask-image: radial-gradient(ellipse at 50% 20%, black 20%, transparent 80%);
+            -webkit-mask-image: radial-gradient(ellipse at 50% 20%, black 20%, transparent 80%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 17, 25, 0.82);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
-            padding: 1.2rem 2rem;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 14px 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 1000px;
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 17px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .logo:hover {
+            color: var(--accent-bright);
+        }
+
+        .logo-mark {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(99, 102, 241, 0.25));
+            border: 1px solid var(--border);
+            color: var(--accent-bright);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-top: 1px solid var(--border-rim);
+            transition: all 0.22s ease;
+        }
+
+        .back-link:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--accent-bright);
+            color: var(--accent-bright);
+            transform: translateX(-2px);
+        }
+
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 4.5rem 1.5rem 5rem;
+        }
+
+        .page-hero {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--accent-bright);
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid var(--border);
+            padding: 5px 12px;
+            border-radius: 999px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 4.5vw, 2.85rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            margin-bottom: 14px;
+            background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-lead {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            max-width: 640px;
             margin: 0 auto;
         }
-        .logo { font-weight: 700; font-size: 1.3rem; color: var(--text); text-decoration: none; }
-        .back-btn {
-            color: var(--muted);
+
+        .content-card {
+            background: var(--bg-secondary);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-top: 1px solid var(--border-rim);
+            border-radius: 0.75rem;
+            padding: 2.25rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
+        }
+
+        h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            margin-bottom: 1.25rem;
+        }
+
+        .contact-channels {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .channel-box {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 0.65rem;
+            padding: 1.25rem;
             text-decoration: none;
-            font-size: 0.95rem;
-            padding: 0.5rem 1rem;
-            border: 1px solid var(--border);
-            border-radius: 6px;
+            transition: transform 0.2s ease, border-color 0.2s ease;
         }
-        .back-btn:hover { color: var(--text); border-color: var(--accent); }
-        .container {
-            max-width: 650px;
-            margin: 3rem auto;
-            padding: 2rem;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
+
+        .channel-box:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-bright);
         }
-        h1 { font-size: 2rem; margin-bottom: 0.5rem; }
-        p { color: var(--muted); margin-bottom: 1.5rem; }
-        .form-group { margin-bottom: 1.2rem; }
-        label { display: block; margin-bottom: 0.4rem; font-size: 0.9rem; color: var(--text); }
-        input, textarea {
+
+        .channel-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(59, 130, 246, 0.14);
+            border: 1px solid var(--border);
+            color: var(--accent-bright);
+            flex-shrink: 0;
+        }
+
+        .channel-meta span {
+            display: block;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-tertiary);
+            margin-bottom: 2px;
+        }
+
+        .channel-meta strong {
+            font-size: 0.98rem;
+            color: var(--text-primary);
+            word-break: break-all;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-grid .form-group {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        select,
+        textarea {
             width: 100%;
-            padding: 0.8rem;
-            background: #09090b;
+            padding: 12px 14px;
+            background: var(--bg-terminal);
             border: 1px solid var(--border);
-            border-radius: 6px;
-            color: var(--text);
-            font-family: inherit;
+            border-top: 1px solid var(--border-rim);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            font-size: 0.95rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
-        input:focus, textarea:focus { outline: none; border-color: var(--accent); }
-        button {
-            background: var(--accent);
-            color: #fff;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 6px;
+
+        textarea {
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent-bright);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18);
+        }
+
+        select option {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .submit-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 14px 24px;
+            background: linear-gradient(120deg, #2563eb, #4f46e5, #06b6d4);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-top: 1px solid rgba(255, 255, 255, 0.35);
+            border-radius: 10px;
+            font-family: var(--font-sans);
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            width: 100%;
-            font-size: 1rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-        button:hover { opacity: 0.9; }
-        .direct-email {
-            margin-top: 2rem;
-            padding-top: 1.5rem;
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.5);
+        }
+
+        dl.faq-list {
+            display: grid;
+            gap: 1.25rem;
+        }
+
+        .faq-entry {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-glass);
+            border-left: 3px solid var(--accent);
+            border-radius: 0.6rem;
+            padding: 1.25rem 1.5rem;
+        }
+
+        dt {
+            font-weight: 600;
+            font-size: 1.02rem;
+            color: var(--text-primary);
+            margin-bottom: 0.45rem;
+        }
+
+        dd {
+            color: var(--text-secondary);
+            font-size: 0.94rem;
+            line-height: 1.65;
+        }
+
+        footer {
+            background: var(--bg-secondary);
             border-top: 1px solid var(--border);
-            font-size: 0.95rem;
-            text-align: center;
+            padding: 2.5rem 1.5rem;
+            margin-top: 3rem;
         }
-        a { color: var(--accent); text-decoration: none; }
-        footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.9rem; }
+
+        .footer-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            font-size: 0.875rem;
+            color: var(--text-tertiary);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.25rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-bright);
+        }
+
+        @media (max-width: 640px) {
+            main {
+                padding: 3rem 1rem 3.5rem;
+            }
+            .content-card {
+                padding: 1.5rem;
+            }
+            .footer-inner {
+                flex-direction: column;
+                text-align: center;
+            }
+            .footer-links {
+                justify-content: center;
+            }
+        }
     </style>
 </head>
 <body>
-
-    <nav>
-        <a href="index.html" class="logo">PromptifyAI</a>
-        <a href="index.html" class="back-btn">← Back to Home</a>
-    </nav>
-
-    <div class="container">
-        <h1>Contact Us</h1>
-        <p>Have a question, bug report, or feedback about PromptifyAI? Fill out the form below or send us a direct email.</p>
-
-        <form id="contactForm">
-            <div class="form-group">
-                <label for="name">Your Name</label>
-                <input type="text" id="name" required placeholder="Enter your name">
-            </div>
-            <div class="form-group">
-                <label for="subject">Subject</label>
-                <input type="text" id="subject" required placeholder="Bug report / Feature request / Support">
-            </div>
-            <div class="form-group">
-                <label for="message">Message</label>
-                <textarea id="message" rows="5" required placeholder="How can we help you?"></textarea>
-            </div>
-            <button type="submit">Send Message</button>
-        </form>
-
-        <div class="direct-email">
-            <p>Or email us directly at: <a href="mailto:officialnotwinter@gmail.com">officialnotwinter@gmail.com</a></p>
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <span class="logo-mark">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="4 17 10 11 4 5"></polyline>
+                        <line x1="12" y1="19" x2="20" y2="19"></line>
+                    </svg>
+                </span>
+                PromptifyAI
+            </a>
+            <a href="index.html" class="back-link">← Back to App</a>
         </div>
-    </div>
+    </header>
+
+    <main>
+        <div class="page-hero">
+            <span class="eyebrow">// Developer Support &amp; Inquiries</span>
+            <h1>Contact PromptifyAI</h1>
+            <p class="hero-lead">
+                Have a bug report, feature request, Pro supporter question, or business inquiry? Reach out directly or submit a ticket below.
+            </p>
+        </div>
+
+        <!-- DIRECT CONTACT CHANNELS -->
+        <section class="content-card">
+            <h2>Direct Contact Channels</h2>
+            <div class="contact-channels">
+                <a href="mailto:officialnotwinter@gmail.com" class="channel-box">
+                    <span class="channel-icon">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                    </span>
+                    <div class="channel-meta">
+                        <span>Official Support Email</span>
+                        <strong>officialnotwinter@gmail.com</strong>
+                    </div>
+                </a>
+
+                <a href="https://www.youtube.com/@IamNotWinterYT" target="_blank" rel="noopener" class="channel-box">
+                    <span class="channel-icon">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
+                            <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+                        </svg>
+                    </span>
+                    <div class="channel-meta">
+                        <span>Creator YouTube Channel</span>
+                        <strong>@IamNotWinterYT</strong>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- MODERN CONTACT FORM -->
+        <section class="content-card">
+            <h2>Send a Message</h2>
+            <form action="#" method="POST">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="full_name">Full Name</label>
+                        <input type="text" id="full_name" name="full_name" placeholder="Ada Lovelace" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="developer@domain.com" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="topic">Inquiry Topic</label>
+                    <select id="topic" name="topic" required>
+                        <option value="" disabled selected>Select an inquiry category...</option>
+                        <option value="Bug Report">Bug Report</option>
+                        <option value="Feature Request">Feature Request</option>
+                        <option value="Business/AdSense">Business/AdSense</option>
+                        <option value="General">General</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="6" placeholder="Provide details about your inquiry, browser environment, or feature suggestion..." required></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    <span>Submit Inquiry</span>
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                    </svg>
+                </button>
+            </form>
+        </section>
+
+        <!-- QUICK FAQ SECTION -->
+        <section class="content-card">
+            <h2>Quick Support FAQ</h2>
+            <dl class="faq-list">
+                <div class="faq-entry">
+                    <dt>What are the tool's daily usage limits?</dt>
+                    <dd>
+                        Free users receive 35 standard prompt optimizations every 24 hours with zero credit card required. Pro Supporters enjoy unlimited daily executions on the Standard Engine (Gemini Flash) plus up to 100 high-compute executions daily on the Advanced Engine (Gemini Pro).
+                    </dd>
+                </div>
+
+                <div class="faq-entry">
+                    <dt>Is PromptifyAI free for students and independent developers?</dt>
+                    <dd>
+                        Yes! PromptifyAI's core prompt compiler and our 35 daily optimizations are 100% free forever for students, researchers, and independent builders.
+                    </dd>
+                </div>
+
+                <div class="faq-entry">
+                    <dt>How can I report a bug or suggest a new target AI framework?</dt>
+                    <dd>
+                        Select "Bug Report" or "Feature Request" in the form above, or email us directly at <strong>officialnotwinter@gmail.com</strong> with steps to reproduce the issue or details on the model you would like us to add.
+                    </dd>
+                </div>
+
+                <div class="faq-entry">
+                    <dt>How quickly is Pro Supporter status activated?</dt>
+                    <dd>
+                        When you support PromptifyAI via Buy Me a Coffee using the same Google email address you use to sign in, your Pro tier perks (including 3-Prompt Matrix Mode) are linked to your account email. If you need manual verification, email us at <strong>officialnotwinter@gmail.com</strong>.
+                    </dd>
+                </div>
+            </dl>
+        </section>
+    </main>
 
     <footer>
-        © 2026 PromptifyAI. All rights reserved.
+        <div class="footer-inner">
+            <p>© 2026 PromptifyAI. Built by IamNotWinterYT. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="index.html">App</a>
+                <a href="about.html">About &amp; Guide</a>
+                <a href="contact.html">Contact</a>
+                <a href="terms.html">Terms of Service</a>
+                <a href="privacy.html">Privacy Policy</a>
+            </div>
+        </div>
     </footer>
-
-    <script>
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const name = document.getElementById('name').value;
-            const subject = encodeURIComponent(document.getElementById('subject').value);
-            const message = encodeURIComponent("From: " + name + "\n\n" + document.getElementById('message').value);
-            window.location.href = `mailto:officialnotwinter@gmail.com?subject=${subject}&body=${message}`;
-        });
-    </script>
-
 </body>
 </html>
